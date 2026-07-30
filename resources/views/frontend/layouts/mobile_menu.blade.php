@@ -1,80 +1,90 @@
-<div class="offcanvas__header">
+<div class="mobile-menu d-lg-none d-block">
 
-    <div class="offcanvas__inner">
+    <button type="button" class="close-button"> <i class="las la-times"></i> </button>
 
-        <div class="offcanvas__logo">
-            <a class="offcanvas__logo_link" href="{{ route('index') }}">
-                <img src="{{ asset(GlobalSiteSettings()->site_header_logo) }}" alt="Logo-img" width="158" height="36">
-            </a>
-            <button class="offcanvas__close--btn" data-offcanvas>close</button>
-        </div>
+    <div class="mobile-menu__inner">
 
-        <nav class="offcanvas__menu">
+        <a href="{{ route('index') }}" class="mobile-menu__logo">
+            <img src="{{ asset('frontend/assets/images/logo/logo-two.png') }}" alt="Logo" class="white-version">
+            <img src="{{ asset('frontend/assets/images/logo/white-logo.png') }}" alt="Logo" class="dark-version">
+        </a>
 
-            <ul class="offcanvas__menu_ul">
+        <div class="mobile-menu__menu">
 
-                <li class="offcanvas__menu_li">
-                    <a class="offcanvas__menu_item" href="{{ route('index') }}">Home</a>
+            <ul class="nav-menu flx-align nav-menu--mobile">
+
+                <li class="nav-menu__item">
+                    <a href="{{ route('index') }}" class="nav-menu__link">Home</a>
                 </li>
 
-                <li class="offcanvas__menu_li">
-                    <a class="offcanvas__menu_item" href="{{ route('shop') }}">Shop</a>
+                <li class="nav-menu__item">
+                    <a href="javascript:void(0)" class="nav-menu__link">Font</a>
                 </li>
 
-                <li class="offcanvas__menu_li">
-                    <a class="offcanvas__menu_item" href="{{ route('product.by.category', 'clothing') }}">Clothing</a>
+                <li class="nav-menu__item has-submenu">
+                    <a href="javascript:void(0)" class="nav-menu__link">Mockups</a>
+                    <ul class="nav-submenu">
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Mockup One</a>
+                        </li>
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Mockup Two</a>
+                        </li>
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Mockup Three</a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="offcanvas__menu_li">
-                    <a class="offcanvas__menu_item" href="{{ route('product.by.category', 'hats') }}">Hats</a>
+                <li class="nav-menu__item has-submenu">
+                    <a href="javascript:void(0)" class="nav-menu__link">Vectors</a>
+                    <ul class="nav-submenu">
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Vector One</a>
+                        </li>
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Vector Two</a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="offcanvas__menu_li">
-                    <a class="offcanvas__menu_item" href="{{ route('product.by.category', 'books') }}">Books</a>
+                <li class="nav-menu__item has-submenu">
+                    <a href="javascript:void(0)" class="nav-menu__link">Animation</a>
+                    <ul class="nav-submenu">
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Animation One</a>
+                        </li>
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Animation Two</a>
+                        </li>
+                        <li class="nav-submenu__item">
+                            <a href="javascript:void(0)" class="nav-submenu__link"> Animation Three</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-menu__item">
+                    <a href="javascript:void(0)" class="nav-menu__link">Web Theme</a>
+                </li>
+
+                <li class="nav-menu__item">
+                    <a href="{{ route('contact') }}" class="nav-menu__link">Contact</a>
                 </li>
 
             </ul>
 
-            <div class="offcanvas__account--items">
-                @auth('user')
-                    <a class="offcanvas__account--items__btn d-flex align-items-center" href="{{ route('customer.dashboard') }}">
-                        <span class="offcanvas__account--items__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20.51" height="19.443" viewBox="0 0 512 512">
-                                <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
-                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-                                <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z"
-                                    fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-                            </svg>
-                        </span>
-                        <span class="offcanvas__account--items__label">My Account</span>
-                    </a>
-                    <a class="offcanvas__account--items__btn d-flex align-items-center mt-2" href="{{ route('customer.logout') }}">
-                        <span class="offcanvas__account--items__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                <polyline points="16 17 21 12 16 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                            </svg>
-                        </span>
-                        <span class="offcanvas__account--items__label">Logout</span>
-                    </a>
-                @else
-                    <a class="offcanvas__account--items__btn d-flex align-items-center" href="{{ route('customer.login') }}">
-                        <span class="offcanvas__account--items__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20.51" height="19.443" viewBox="0 0 512 512">
-                                <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
-                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-                                <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z"
-                                    fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/>
-                            </svg>
-                        </span>
-                        <span class="offcanvas__account--items__label">Login / Register</span>
-                    </a>
-                @endauth
+            <div class="header-right__inner d-lg-none my-3 gap-1 d-flex flx-align">
+
+                <a href="javascript:void(0)" class="btn btn-main pill">
+                    <span class="icon-left icon">
+                        <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
+                    </span>Create Account
+                </a>
+
             </div>
 
-        </nav>
+        </div>
 
     </div>
-
+    
 </div>
