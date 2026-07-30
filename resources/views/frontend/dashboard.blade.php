@@ -33,7 +33,7 @@
 <body>
 
     <!--==================== Preloader Start ====================-->
-    @include('frontend.layouts.preloader')
+    {{-- @include('frontend.layouts.preloader') --}}
     <!--==================== Preloader End ====================-->
 
     <!--==================== Overlay Start ====================-->
