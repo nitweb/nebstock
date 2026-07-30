@@ -1,20 +1,32 @@
 @extends('frontend.dashboard')
 @section('frontend_title', 'Home')
-@section('frontend_content')
+@section('frontend_contents')
 
-    @include('frontend.home.01_slider')
+    {{-- Banner Section --}}
+    @include('frontend.home.01_banner')
 
-    @include('frontend.home.02_category_banner')
+    {{-- popular Section --}}
+    @include('frontend.home.02_popular')
 
-    @include('frontend.home.03_featured_product')
+    {{-- Arrival Product Section --}}
+    @include('frontend.home.03_arrival_product')
 
-    {{-- ── Dynamic Category Product Sections ─────────────────────────────── --}}
-    @foreach ($categories as $cat)
-        @include('frontend.home.category_collection', ['cat' => $cat])
-    @endforeach
+    {{-- Featured Products --}}
+    @include('frontend.home.04_featured_products')
 
-    {{-- @include('frontend.home.05_feature') --}}
+    {{-- Selling Products --}}
+    @include('frontend.home.05_selling_products')
 
-    {{-- @include('frontend.home.06_blog') --}}
+    {{-- To Featured Author --}}
+    @include('frontend.home.06_top_featured_author')
+
+    {{-- Top performance Author --}}
+    @include('frontend.home.07_top_performance')
+
+    {{-- Become seller section --}}
+    @include('frontend.home.08_become_seller')
+
+    {{-- Brand Section --}}
+    @include('frontend.home.09_brand')
 
 @endsection
