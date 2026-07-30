@@ -1,3 +1,6 @@
+{{-- Brand Section --}}
+@include('frontend.home.09_brand')
+
 <footer class="footer-section ">
 
     <img src="{{ asset('frontend/assets/images/shapes/pattern.png') }}" alt="" class="bg-pattern">

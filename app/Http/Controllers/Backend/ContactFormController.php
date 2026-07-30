@@ -18,7 +18,7 @@ class ContactFormController extends Controller
             [
                 'contact_form_name' => 'required|string|max:255',
                 'contact_form_email' => 'required|email|max:255',
-                'contact_form_phone' => 'string|max:20',
+                'contact_form_phone' => 'nullable|string|max:20',
                 'contact_form_subject' => 'required|string|max:255',
                 'contact_form_message' => 'required|string',
             ],
@@ -33,13 +33,10 @@ class ContactFormController extends Controller
         );
 
         if ($validator->fails()) {
-            return response()->json(
-                [
-                    'success' => false,
-                    'errors' => $validator->errors(),
-                ],
-                422,
-            );
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         try {
@@ -51,19 +48,15 @@ class ContactFormController extends Controller
             $contactForm->contact_form_message = $request->contact_form_message;
             $contactForm->save();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Message submitted successfully!',
-            ]);
+            return redirect()
+                ->back()
+                ->with('success', 'Message submitted successfully!');
         } catch (\Throwable $e) {
             Log::error('Error submitting contact form: ' . $e->getMessage());
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => 'Failed to submit. Please try again.',
-                ],
-                500,
-            );
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to submit. Please try again.');
         }
     } // End Method
 

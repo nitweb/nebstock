@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/line-awesome.min.css') }}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">
 
 </head>
 
@@ -113,6 +115,8 @@
 
     <!-- main js -->
     <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+
+     @stack('scripts')
 
 </body>
 
