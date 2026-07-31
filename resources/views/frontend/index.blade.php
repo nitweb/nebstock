@@ -26,7 +26,4 @@
     {{-- Become seller section --}}
     @include('frontend.home.08_become_seller')
 
-    {{-- Brand Section --}}
-    @include('frontend.home.09_brand')
-
 @endsection
