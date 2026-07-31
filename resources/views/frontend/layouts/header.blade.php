@@ -7,7 +7,7 @@
             <!-- Logo Start -->
             <div class="logo">
                 <a href="{{ route('index') }}" class="link white-version">
-                    <img src="{{ asset('frontend/assets/images/logo/logo-two.png') }}" alt="Logo">
+                    <img src="{{ asset(GlobalSiteSettings()->site_header_logo) }}" alt="Logo">
                 </a>
                 <a href="{{ route('index') }}" class="link dark-version">
                     <img src="{{ asset('frontend/assets/images/logo/white-logo.png') }}" alt="Logo">
