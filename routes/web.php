@@ -325,7 +325,7 @@ Route::middleware('customer')->group(function () {
         ->name('blog.edit.store')
         ->middleware('customer');
 
-    Route::get('/download/{slug}', [DownloadController::class, 'download'])->name('product.download');
+    Route::post('/download/{slug}', [DownloadController::class, 'download'])->name('product.download');
     Route::get('/download/remaining/check', [DownloadController::class, 'remaining'])->name('product.download.remaining');
 });
 
