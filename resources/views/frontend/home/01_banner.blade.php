@@ -49,35 +49,15 @@
 
                         <!-- Tech List Start -->
                         <div class="product-category-list">
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="WordPress">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon1.png') }}" alt="" class="white-version">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon-white1.png') }}" alt="" class="dark-version">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Laravel">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon2.png') }}" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="PHP">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon3.png') }}" alt="" class="white-version">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon-white3.png') }}" alt="" class="dark-version">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="HTML">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon4.png') }}" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Sketch">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon5.png') }}" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Figma">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon6.png') }}" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Bootstrap">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon7.png') }}" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tailwind">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon8.png') }}" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="React">
-                                <img src="{{ asset('frontend/assets/images/thumbs/tech-icon9.png') }}" alt="">
-                            </a>
+                            @forelse($categories as $category)
+                                <a href="{{ route('product.by.category', $category->slug) }}" class="product-category-list__item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ $category->name }}">
+                                    <img src="{{ $category->icon ? asset($category->icon) : asset('frontend/assets/images/thumbs/tech-icon1.png') }}" alt="{{ $category->name }}">
+                                </a>
+                            @empty
+                                <a href="javascript:void(0)" class="product-category-list__item">
+                                    <img src="{{ asset('frontend/assets/images/thumbs/tech-icon1.png') }}" alt="">
+                                </a>
+                            @endforelse
                         </div>
                         <!-- Tech List End -->
 
@@ -91,18 +71,18 @@
 
                 <div class="hero-thumb">
 
-                    <img src="{{ asset('frontend/assets/images/thumbs/banner-img.png') }}" alt="">
+                    <img src="{{ $slider_data->first() ? asset($slider_data->first()->slider_image) : asset('frontend/assets/images/thumbs/banner-img.png') }}" alt="">
                     <img src="{{ asset('frontend/assets/images/shapes/dots.png') }}" alt="" class="dotted-img white-version">
                     <img src="{{ asset('frontend/assets/images/shapes/dots-white.png') }}" alt="" class="dotted-img dark-version">
                     <img src="{{ asset('frontend/assets/images/shapes/element2.png') }}" alt="" class="element two end-0">
 
                     <div class="statistics animation bg-main text-center">
-                        <h5 class="statistics__amount text-white">50k</h5>
+                        <h5 class="statistics__amount text-white">{{ $total_subscribers ?? 0 }}+</h5>
                         <span class="statistics__text text-white font-14">Customers</span>
                     </div>
 
                     <div class="statistics style-two bg-white text-center">
-                        <h5 class="statistics__amount statistics__amount-two text-heading">22k</h5>
+                        <h5 class="statistics__amount statistics__amount-two text-heading">{{ $total_products ?? 0 }}+</h5>
                         <span class="statistics__text text-heading font-14">Themes & Plugins</span>
                     </div>
 
