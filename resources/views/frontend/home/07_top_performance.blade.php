@@ -22,19 +22,19 @@
                     <div class="performance-content">
                         <div class="performance-content__item">
                             <span class="performance-content__text font-18">Email Subscription</span>
-                            <h4 class="performance-content__count">49,000+</h4>
+                            <h4 class="performance-content__count">{{ number_format($total_subscribers ?? 0) }}+</h4>
                         </div>
                         <div class="performance-content__item">
                             <span class="performance-content__text font-18"> Total Products</span>
-                            <h4 class="performance-content__count">45,000+</h4>
+                            <h4 class="performance-content__count">{{ number_format($total_products ?? 0) }}+</h4>
                         </div>
                         <div class="performance-content__item">
                             <span class="performance-content__text font-18"> Total Download</span>
-                            <h4 class="performance-content__count">48,000+</h4>
+                            <h4 class="performance-content__count">{{ number_format($total_downloads ?? 0) }}+</h4>
                         </div>
                         <div class="performance-content__item">
-                            <span class="performance-content__text font-18"> Monthly Visitor</span>
-                            <h4 class="performance-content__count">65,000+</h4>
+                            <span class="performance-content__text font-18"> Total Categories</span>
+                            <h4 class="performance-content__count">{{ number_format($categories->count() ?? 0) }}+</h4>
                         </div>
                     </div>
                 </div>

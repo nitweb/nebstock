@@ -9,6 +9,7 @@ use App\Models\BulkOrder;
 use App\Models\Category;
 use App\Models\MissionVision;
 use App\Models\Newsletter;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductReview;
 use App\Models\Slider;
@@ -66,7 +67,18 @@ class FrontendController extends Controller
 
         $blogs = Blog::where('blog_status', 'active')->latest()->take(3)->get();
 
-        return view('frontend.index', compact('slider_data', 'categories', 'featured_products', 'latest_products', 'blogs'));
+        // Top featured author (home section 06)
+        $top_author = Author::where('status', 'active')->latest()->first();
+
+        // Site-wide stats (home section 07)
+        $total_products     = Product::active()->count();
+        $total_subscribers  = Newsletter::count();
+        $total_downloads    = Order::count();
+
+        return view('frontend.index', compact(
+            'slider_data', 'categories', 'featured_products', 'latest_products', 'blogs',
+            'top_author', 'total_products', 'total_subscribers', 'total_downloads'
+        ));
     }
 
     // ─────────────────────────────────────────────────────────────────────────

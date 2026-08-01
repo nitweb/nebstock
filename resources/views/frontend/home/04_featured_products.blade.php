@@ -14,174 +14,51 @@
 
                 <div class="row gy-4 card-wrapper">
 
-                    <div class="col-sm-6">
-                        <div class="product-item box-shadow">
-                            <div class="product-item__thumb d-flex">
-                                <a href="javascript:void(0)" class="link w-100">
-                                    <img src="{{ asset('frontend/assets/images/thumbs/product-img9.png') }}" alt="" class="cover-img">
-                                </a>
-                                <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
-                            </div>
-                            <div class="product-item__content">
-                                <h6 class="product-item__title">
-                                    <a href="javascript:void(0)" class="link">SaaS dashboard digital products Title here</a>
-                                </h6>
-                                <div class="product-item__info flx-between gap-2">
-                                    <span class="product-item__author">
-                                        by
-                                        <a href="javascript:void(0)" class="link hover-text-decoration-underline"> themepix</a>
-                                    </span>
-                                    <div class="flx-align gap-2">
-                                        <h6 class="product-item__price mb-0">$120</h6>
-                                        <span class="product-item__prevPrice text-decoration-line-through">$259</span>
-                                    </div>
+                    @forelse($featured_products as $product)
+                        <div class="col-sm-6">
+                            <div class="product-item box-shadow">
+                                <div class="product-item__thumb d-flex">
+                                    <a href="{{ route('product.details', $product->slug) }}" class="link w-100">
+                                        <img src="{{ $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('frontend/assets/images/thumbs/product-img9.png') }}" alt="{{ $product->name }}" class="cover-img">
+                                    </a>
+                                    <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
                                 </div>
-                                <div class="product-item__bottom flx-between gap-2">
-                                    <div>
-                                        <span class="product-item__sales font-14 mb-2">1200 Sales</span>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <ul class="star-rating">
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <span class="star-rating__text text-heading fw-500 font-14"> (16)</span>
+                                <div class="product-item__content">
+                                    <h6 class="product-item__title">
+                                        <a href="{{ route('product.details', $product->slug) }}" class="link">{{ $product->name }}</a>
+                                    </h6>
+                                    <div class="product-item__info flx-between gap-2">
+                                        <span class="product-item__author">
+                                            by
+                                            <a href="javascript:void(0)" class="link hover-text-decoration-underline"> {{ $product->primary_author_name ?: 'Unknown' }}</a>
+                                        </span>
+                                        <div class="flx-align gap-2">
+                                            <h6 class="product-item__price mb-0">${{ number_format($product->selling_price, 2) }}</h6>
+                                            @if($product->discount_price)
+                                                <span class="product-item__prevPrice text-decoration-line-through">${{ number_format($product->price, 2) }}</span>
+                                            @endif
                                         </div>
                                     </div>
-                                    <a href="javascript:void(0)" class="btn btn-outline-light btn-sm pill">Live Demo</a>
+                                    <div class="product-item__bottom flx-between gap-2">
+                                        <div>
+                                            <span class="product-item__sales font-14 mb-2">{{ $product->acceptedReviews->count() }} Reviews</span>
+                                            <div class="d-flex align-items-center gap-1">
+                                                <ul class="star-rating">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
+                                                    @endfor
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('product.details', $product->slug) }}" class="btn btn-outline-light btn-sm pill">View</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @empty
+                        <p class="text-center w-100">No featured products yet.</p>
+                    @endforelse
 
-                    <div class="col-sm-6">
-                        <div class="product-item box-shadow">
-                            <div class="product-item__thumb d-flex">
-                                <a href="javascript:void(0)" class="link w-100">
-                                    <img src="{{ asset('frontend/assets/images/thumbs/product-img10.png') }}" alt="" class="cover-img">
-                                </a>
-                                <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
-                            </div>
-                            <div class="product-item__content">
-                                <h6 class="product-item__title">
-                                    <a href="javascript:void(0)" class="link">SaaS dashboard digital products Title here</a>
-                                </h6>
-                                <div class="product-item__info flx-between gap-2">
-                                    <span class="product-item__author">
-                                        by
-                                        <a href="javascript:void(0)" class="link hover-text-decoration-underline"> themepix</a>
-                                    </span>
-                                    <div class="flx-align gap-2">
-                                        <h6 class="product-item__price mb-0">$129</h6>
-                                        <span class="product-item__prevPrice text-decoration-line-through">$236</span>
-                                    </div>
-                                </div>
-                                <div class="product-item__bottom flx-between gap-2">
-                                    <div>
-                                        <span class="product-item__sales font-14 mb-2">100 Sales</span>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <ul class="star-rating">
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <span class="star-rating__text text-heading fw-500 font-14"> (16)</span>
-                                        </div>
-                                    </div>
-                                    <a href="javascript:void(0)" class="btn btn-outline-light btn-sm pill">Live Demo</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="product-item box-shadow">
-                            <div class="product-item__thumb d-flex">
-                                <a href="javascript:void(0)" class="link w-100">
-                                    <img src="{{ asset('frontend/assets/images/thumbs/product-img11.png') }}" alt="" class="cover-img">
-                                </a>
-                                <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
-                            </div>
-                            <div class="product-item__content">
-                                <h6 class="product-item__title">
-                                    <a href="javascript:void(0)" class="link">SaaS dashboard digital products Title here</a>
-                                </h6>
-                                <div class="product-item__info flx-between gap-2">
-                                    <span class="product-item__author">
-                                        by
-                                        <a href="javascript:void(0)" class="link hover-text-decoration-underline"> themepix</a>
-                                    </span>
-                                    <div class="flx-align gap-2">
-                                        <h6 class="product-item__price mb-0">$79</h6>
-                                        <span class="product-item__prevPrice text-decoration-line-through">$99</span>
-                                    </div>
-                                </div>
-                                <div class="product-item__bottom flx-between gap-2">
-                                    <div>
-                                        <span class="product-item__sales font-14 mb-2">900 Sales</span>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <ul class="star-rating">
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <span class="star-rating__text text-heading fw-500 font-14"> (16)</span>
-                                        </div>
-                                    </div>
-                                    <a href="javascript:void(0)" class="btn btn-outline-light btn-sm pill">Live Demo</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="product-item box-shadow">
-                            <div class="product-item__thumb d-flex">
-                                <a href="javascript:void(0)" class="link w-100">
-                                    <img src="{{ asset('frontend/assets/images/thumbs/product-img4.png') }}" alt="" class="cover-img">
-                                </a>
-                                <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
-                            </div>
-                            <div class="product-item__content">
-                                <h6 class="product-item__title">
-                                    <a href="javascript:void(0)" class="link">SaaS dashboard digital products Title here</a>
-                                </h6>
-                                <div class="product-item__info flx-between gap-2">
-                                    <span class="product-item__author">
-                                        by
-                                        <a href="javascript:void(0)" class="link hover-text-decoration-underline"> themepix</a>
-                                    </span>
-                                    <div class="flx-align gap-2">
-                                        <h6 class="product-item__price mb-0">$59</h6>
-                                        <span class="product-item__prevPrice text-decoration-line-through">$129</span>
-                                    </div>
-                                </div>
-                                <div class="product-item__bottom flx-between gap-2">
-                                    <div>
-                                        <span class="product-item__sales font-14 mb-2">1225 Sales</span>
-                                        <div class="d-flex align-items-center gap-1">
-                                            <ul class="star-rating">
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                                <li class="star-rating__item font-11"><i class="fas fa-star"></i></li>
-                                            </ul>
-                                            <span class="star-rating__text text-heading fw-500 font-14"> (16)</span>
-                                        </div>
-                                    </div>
-                                    <a href="javascript:void(0)" class="btn btn-outline-light btn-sm pill">Live Demo</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
                 </div>
             </div>
 
@@ -193,7 +70,7 @@
                         <h3 class="section-heading__title">Featured Products</h3>
                         <p class="section-heading__desc font-18 w-sm">Every month we pick some best products for you. This month's best web themes & templates have arrived, chosen by our content specialists.</p>
                     </div>
-                    <a href="javascript:void(0)" class="btn btn-main btn-lg pill fw-300">
+                    <a href="{{ route('shop') }}" class="btn btn-main btn-lg pill fw-300">
                         View All Items
                     </a>
                 </div>
