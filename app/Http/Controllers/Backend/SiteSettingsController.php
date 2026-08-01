@@ -40,6 +40,8 @@ class SiteSettingsController extends Controller
                 'site_description' => 'nullable|string',
                 'site_copyright' => 'required|string|max:255',
                 'site_google_map' => 'nullable|string',
+                'registration_fee' => 'required|numeric|min:0',
+                'bkash_merchant_number' => 'nullable|string|max:20',
             ],
             [
                 'site_header_logo.image' => 'Header logo must be an image file',
@@ -95,6 +97,8 @@ class SiteSettingsController extends Controller
             $site_settings->site_description = $request->site_description;
             $site_settings->site_copyright = $request->site_copyright;
             $site_settings->site_google_map = $request->site_google_map;
+            $site_settings->registration_fee = $request->registration_fee;
+            $site_settings->bkash_merchant_number = $request->bkash_merchant_number;
 
             $site_settings->save();
 
