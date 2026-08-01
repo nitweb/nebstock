@@ -4,9 +4,12 @@
 @endphp
 
 @if($__canDownload)
-    <a href="{{ route('product.download', $product->slug) }}" class="btn btn-outline-light btn-sm pill download-btn">
-        <i class="fas fa-download me-1"></i> Download
-    </a>
+    <form action="{{ route('product.download', $product->slug) }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-outline-light btn-sm pill download-btn">
+            <i class="fas fa-download me-1"></i> Download
+        </button>
+    </form>
 @else
     {{-- Button hidden for guests / unapproved users, as required --}}
 @endif
