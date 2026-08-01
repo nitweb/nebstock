@@ -86,12 +86,6 @@
             <!-- Header Right start -->
             <div class="header-right flx-align">
 
-                <a href="javascript:void(0)" class="header-right__button cart-btn position-relative">
-                    <img src="{{ asset('frontend/assets/images/icons/cart.svg') }}" alt="" class="white-version">
-                    <img src="{{ asset('frontend/assets/images/icons/cart-white.svg') }}" alt="" class="dark-version">
-                    <span class="qty-badge font-12">0</span>
-                </a>
-
                 <!-- Light Dark Mode -->
                 <div class="theme-switch-wrapper position-relative">
                     <label class="theme-switch" for="checkbox">
@@ -107,11 +101,21 @@
 
                 <div class="header-right__inner gap-3 flx-align d-lg-flex d-none">
 
-                    <a href="javascript:void(0)" class="btn btn-main pill">
-                        <span class="icon-left icon">
-                            <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
-                        </span>Create Account
-                    </a>
+                    @php $__authUser = Auth::guard('user')->user(); @endphp
+
+                    @if($__authUser && $__authUser->role === 'customer')
+                        <a href="{{ route('customer.dashboard') }}" class="btn btn-main pill">
+                            <span class="icon-left icon">
+                                <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
+                            </span>Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('customer.register') }}" class="btn btn-main pill">
+                            <span class="icon-left icon">
+                                <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
+                            </span>Create Account
+                        </a>
+                    @endif
                 </div>
 
                 <button type="button" class="toggle-mobileMenu d-lg-none"> <i class="las la-bars"></i> </button>
