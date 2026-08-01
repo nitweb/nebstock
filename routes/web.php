@@ -34,8 +34,7 @@ Route::middleware('web')->group(function () {
     // Shop
     Route::get('/shop', [FrontendController::class, 'Shop'])->name('shop');
 
-    // Cart
-    Route::get('/cart', [FrontendController::class, 'Cart'])->name('cart');
+    // Cart — REMOVED (no cart flow, direct download instead)
 
     // Product Details
     Route::get('/product/{slug}', [FrontendController::class, 'ProductDetails'])->name('product.details');
@@ -88,14 +87,7 @@ Route::middleware('web')->group(function () {
 
     Route::get('/product/quick-view/{id}', [FrontendController::class, 'quickView'])->name('product.quick-view');
 
-    // ── Cart ──────────────────────────────────────────────────────────────────
-    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::get('/cart/count', [CartController::class, 'cartCount'])->name('cart.count');
-    Route::get('/cart/items', [CartController::class, 'cartItems'])->name('cart.items');
-    Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
-    Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
-    Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
-    Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+    // ── Cart — REMOVED (no cart/checkout flow, direct one-click download instead) ──
 
     // ── Policies ──────────────────────────────────────────────────────────────
     Route::get('/data-usage', [FrontendController::class, 'DataUsage'])->name('data.usage');
@@ -112,8 +104,7 @@ Route::middleware('web')->group(function () {
     // Product By Author
     Route::get('/author/{slug}', [FrontendController::class, 'ProductByAuthor'])->name('product.by.author');
 
-    Route::post('/checkout/tax-rate', [CheckoutController::class, 'getTaxRateAjax'])
-        ->name('checkout.tax.rate');
+    // Checkout tax-rate — REMOVED (no checkout flow)
 });
 
 // #################### End: Frontend Controller ####################
@@ -338,17 +329,8 @@ Route::middleware('customer')->group(function () {
     Route::get('/download/remaining/check', [DownloadController::class, 'remaining'])->name('product.download.remaining');
 });
 
-// ─── Checkout Routes (guest + logged-in উভয়ের জন্য) ──────────────────────
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-Route::post('/checkout/shipping-methods', [CheckoutController::class, 'shippingMethods'])->name('checkout.shipping.methods');
-Route::post('/checkout/calculate', [CheckoutController::class, 'calculate'])->name('checkout.calculate');
-Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.place.order');
-Route::post('/coupon/apply', [CheckoutController::class, 'applyCoupon'])->name('coupon.apply');
-Route::get('/order/success/{orderNumber}', [CheckoutController::class, 'orderSuccess'])->name('order.success');
+// ─── Checkout Routes — REMOVED (no cart, no checkout; direct one-click download after login) ───
 
-// PayPal & Stripe capture (guest + logged-in)
-Route::post('/checkout/paypal/capture', [CheckoutController::class, 'paypalCapture'])->name('checkout.paypal.capture');
-Route::post('/checkout/stripe/capture', [CheckoutController::class, 'stripeCapture'])->name('checkout.stripe.capture');
 
 Route::fallback(function () {
     $url = request()->path();
@@ -360,27 +342,11 @@ Route::fallback(function () {
     return response()->view('frontend.errors.404', [], 404);
 });
 
-// Wishlist — customer guard দিয়ে protect
-Route::get('/wishlist', [WishlistController::class, 'Wishlist'])->name('wishlist');
-
-// Toggle & Remove — middleware ছাড়া রাখো,
-// controller এ নিজেই guard check করবে
-Route::post('/wishlist/toggle', [WishlistController::class, 'WishlistToggle'])->name('wishlist.toggle');
-
-Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'WishlistRemove'])->name('wishlist.remove');
-
-// Count — public (login ছাড়াও 0 return করবে)
-Route::get('/wishlist/count', [WishlistController::class, 'WishlistCount'])->name('wishlist.count');
-
-// web middleware group এর ভেতরে
-Route::get('/wishlist/product-ids', [WishlistController::class, 'WishlistProductIds'])->name('wishlist.product.ids');
-
-Route::delete('/wishlist/remove-ajax/{id}', [WishlistController::class, 'WishlistRemoveAjax'])->name('wishlist.remove.ajax');
-
-Route::delete('/wishlist/clear', [WishlistController::class, 'WishlistClear'])->name('wishlist.clear');
+// Wishlist — REMOVED (no cart/wishlist flow, direct download instead)
 
 Route::post('/newsletter/subscribe', [FrontendController::class, 'subscribe'])->name('newsletter.subscribe');
 
 Route::get('/newsletter/unsubscribe/{token}', [FrontendController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
-Route::post('/checkout/stripe/webhook', [CheckoutController::class, 'stripeWebhook'])->name('checkout.stripe.webhook');
+// Stripe webhook — REMOVED (no checkout/payment gateway flow)
+

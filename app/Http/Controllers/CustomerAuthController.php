@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Download;
+use App\Models\Product;
 use App\Models\SiteSettings;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -132,7 +134,15 @@ class CustomerAuthController extends Controller
     public function dashboard()
     {
         $customer = Auth::guard('user')->user();
-        return view('frontend.customer.dashboard', compact('customer'));
+
+        $todayCount = Download::where('user_id', $customer->id)
+            ->whereDate('download_date', now()->toDateString())
+            ->count();
+        $remaining = max(0, \App\Http\Controllers\DownloadController::DAILY_LIMIT - $todayCount);
+
+        $products = Product::where('status', 'active')->latest()->paginate(12);
+
+        return view('frontend.customer.dashboard', compact('customer', 'products', 'remaining'));
     } // End Method
 
     /* ===== Update Profile ===== */
