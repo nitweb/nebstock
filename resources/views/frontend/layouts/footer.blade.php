@@ -109,3 +109,20 @@
         </div>
     </div>
 </div>
+
+@if(session('limit_reached'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Daily Limit Reached',
+                    text: @json(session('error') ?? 'You have reached your daily download limit. Please wait for the next day.'),
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                alert(@json(session('error') ?? 'You have reached your daily download limit. Please wait for the next day.'));
+            }
+        });
+    </script>
+@endif

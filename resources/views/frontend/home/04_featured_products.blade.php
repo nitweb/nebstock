@@ -18,14 +18,14 @@
                         <div class="col-sm-6">
                             <div class="product-item box-shadow">
                                 <div class="product-item__thumb d-flex">
-                                    <a href="{{ route('product.details', $product->slug) }}" class="link w-100">
-                                        <img src="{{ $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('frontend/assets/images/thumbs/product-img9.png') }}" alt="{{ $product->name }}" class="cover-img">
+                                    <a href="javascript:void(0)" class="link w-100">
+                                        <img src="{{ $product->cover_image ? asset($product->cover_image) : asset('frontend/assets/images/thumbs/product-img9.png') }}" alt="{{ $product->name }}" class="cover-img">
                                     </a>
                                     <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
                                 </div>
                                 <div class="product-item__content">
                                     <h6 class="product-item__title">
-                                        <a href="{{ route('product.details', $product->slug) }}" class="link">{{ $product->name }}</a>
+                                        <a href="javascript:void(0)" class="link">{{ $product->name }}</a>
                                     </h6>
                                     <div class="product-item__info flx-between gap-2">
                                         <span class="product-item__author">
@@ -50,7 +50,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <a href="{{ route('product.details', $product->slug) }}" class="btn btn-outline-light btn-sm pill">View</a>
+                                        @include('frontend.partials.download_button', ['product' => $product])
                                     </div>
                                 </div>
                             </div>
