@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\Backend\AboutCompanyController;
 use App\Http\Controllers\Backend\AuthorController;
 use App\Http\Controllers\Backend\BlogCategoriesController;
@@ -332,6 +333,9 @@ Route::middleware('customer')->group(function () {
     Route::post('/blog/edit/{id}', [FrontendController::class, 'BlogEditStore'])
         ->name('blog.edit.store')
         ->middleware('customer');
+
+    Route::get('/download/{slug}', [DownloadController::class, 'download'])->name('product.download');
+    Route::get('/download/remaining/check', [DownloadController::class, 'remaining'])->name('product.download.remaining');
 });
 
 // ─── Checkout Routes (guest + logged-in উভয়ের জন্য) ──────────────────────

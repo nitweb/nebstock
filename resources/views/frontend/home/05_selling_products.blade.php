@@ -25,13 +25,13 @@
             @forelse($latest_products as $product)
                 <div class="product-item shadow-sm overlay-none">
                     <div class="product-item__thumb d-flex max-h-unset">
-                        <a href="{{ route('product.details', $product->slug) }}" class="link w-100">
-                            <img src="{{ $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('frontend/assets/images/thumbs/product-img12.png') }}" alt="{{ $product->name }}" class="cover-img">
+                        <a href="javascript:void(0)" class="link w-100">
+                            <img src="{{ $product->cover_image ? asset($product->cover_image) : asset('frontend/assets/images/thumbs/product-img12.png') }}" alt="{{ $product->name }}" class="cover-img">
                         </a>
                     </div>
                     <div class="product-item__content">
                         <h6 class="product-item__title">
-                            <a href="{{ route('product.details', $product->slug) }}" class="link">{{ $product->name }}</a>
+                            <a href="javascript:void(0)" class="link">{{ $product->name }}</a>
                         </h6>
                         <div class="product-item__info flx-between gap-2">
                             <span class="product-item__author">
@@ -61,7 +61,7 @@
                                         <img src="{{ asset('frontend/assets/images/icons/download-white.svg') }}" alt="" class="dark-version">
                                     </span>
                                 </a>
-                                <a href="{{ route('product.details', $product->slug) }}" class="btn btn-outline-light pill">View</a>
+                                @include('frontend.partials.download_button', ['product' => $product])
                             </div>
                         </div>
                     </div>
