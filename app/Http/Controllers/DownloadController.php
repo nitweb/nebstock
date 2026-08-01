@@ -38,6 +38,17 @@ class DownloadController extends Controller
                 ->with('error', 'Daily download limit reached (' . self::DAILY_LIMIT . '/day). Please try again tomorrow.');
         }
 
+        // ── Idempotency guard ─────────────────────────────────────────────────
+        // If this exact user+product already has a download logged in the last
+        // 15 seconds, don't count it again — this protects against any duplicate
+        // request source (double click, slow network resubmission, browser/
+        // extension retry, etc.) actually deducting 2 from the daily limit for
+        // a single user action. We still re-serve the zip either way.
+        $alreadyLoggedRecently = Download::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->where('created_at', '>=', now()->subSeconds(15))
+            ->exists();
+
         // ── Collect the 2 files: cover image + resource file (pdf_file) ──────
         $files = [];
 
@@ -78,11 +89,14 @@ class DownloadController extends Controller
         $zip->close();
 
         // ── Log the download (counts toward today's 20/day limit) ────────────
-        Download::create([
-            'user_id' => $user->id,
-            'product_id' => $product->id,
-            'download_date' => now()->toDateString(),
-        ]);
+        // Only log once per user+product within the dedupe window above.
+        if (!$alreadyLoggedRecently) {
+            Download::create([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'download_date' => now()->toDateString(),
+            ]);
+        }
 
         return response()->download($zipPath, $product->slug . '.zip')->deleteFileAfterSend(true);
     } // End Method
