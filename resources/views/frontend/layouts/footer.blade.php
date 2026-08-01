@@ -126,3 +126,20 @@
         });
     </script>
 @endif
+
+<script>
+    // Prevent double-submit on download forms (extra safety against double click / double tap)
+    document.addEventListener('submit', function (e) {
+        if (e.target.matches('form[action*="/download/"]')) {
+            var btn = e.target.querySelector('button[type="submit"]');
+            if (btn) {
+                if (btn.disabled) {
+                    e.preventDefault();
+                    return;
+                }
+                btn.disabled = true;
+                setTimeout(function () { btn.disabled = false; }, 4000);
+            }
+        }
+    });
+</script>
