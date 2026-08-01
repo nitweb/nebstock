@@ -85,6 +85,16 @@
                                     <input type="text" class="form-control" id="site_google_map" name="site_google_map" value="{{ $site_settings_info->site_google_map }}" required>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label for="registration_fee" class="form-label">Registration Fee (BDT)</label>
+                                    <input type="number" step="0.01" min="0" class="form-control" id="registration_fee" name="registration_fee" value="{{ $site_settings_info->registration_fee }}" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="bkash_merchant_number" class="form-label">bKash Merchant/Personal Number</label>
+                                    <input type="text" class="form-control" id="bkash_merchant_number" name="bkash_merchant_number" value="{{ $site_settings_info->bkash_merchant_number }}" placeholder="01XXXXXXXXX">
+                                </div>
+
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                 </div>
