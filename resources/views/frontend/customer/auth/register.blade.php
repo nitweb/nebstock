@@ -1,7 +1,58 @@
-@extends('frontend.dashboard')
-@section('frontend_title', 'Create Account')
-@section('frontend_contents')
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>Customer Register | Nebedge</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/fontawesome-all.min.css') }}">
+    <!-- Slick -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/slick.css') }}">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/magnific-popup.css') }}">
+    <!-- line awesome -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/line-awesome.min.css') }}">
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">
+
+</head>
+
+<body>
+
+    <!--==================== Preloader Start ====================-->
+    <div class="loader-mask">
+        <div class="loader">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!--==================== Preloader End ====================-->
+
+    <div class="overlay"></div>
+    <div class="side-overlay"></div>
+
+    <div class="progress-wrap">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+
+    @include('frontend.layouts.mobile_menu')
+
+    <!-- ================================== Account Page Start =========================== -->
     <section class="account d-flex">
         <img src="{{ asset('frontend/assets/images/thumbs/account-img.png') }}" alt="" class="account__img">
         <div class="account__left d-md-flex d-none flx-align section-bg position-relative z-index-1 overflow-hidden">
@@ -9,31 +60,37 @@
             <div class="account-thumb">
                 <img src="{{ asset('frontend/assets/images/thumbs/banner-img.png') }}" alt="">
                 <div class="statistics animation bg-main text-center">
-                    <h5 class="statistics__amount text-white">{{ $site_settings_info->registration_fee ?? 0 }}৳</h5>
-                    <span class="statistics__text text-white font-14">One-time Fee</span>
+                    <h5 class="statistics__amount text-white">50k</h5>
+                    <span class="statistics__text text-white font-14">Customers</span>
                 </div>
             </div>
         </div>
         <div class="account__right padding-t-120 flx-align">
 
+            <div class="dark-light-mode">
+                <div class="theme-switch-wrapper position-relative">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" class="d-none" id="checkbox">
+                        <span class="slider text-black header-right__button white-version">
+                            <img src="{{ asset('frontend/assets/images/icons/sun.svg') }}" alt="">
+                        </span>
+                        <span class="slider text-black header-right__button dark-version">
+                            <img src="{{ asset('frontend/assets/images/icons/moon.svg') }}" alt="">
+                        </span>
+                    </label>
+                </div>
+            </div>
+
             <div class="account-content">
                 <a href="{{ route('index') }}" class="logo mb-64">
-                    <img src="{{ asset($site_settings_info->site_header_logo ?? 'frontend/assets/images/logo/logo.png') }}" alt="">
+                    <img src="{{ asset(GlobalSiteSettings()->site_header_logo ?? 'frontend/assets/images/logo/logo.png') }}" alt="" class="white-version">
+                    <img src="{{ asset('frontend/assets/images/logo/white-logo-two.png') }}" alt="" class="dark-version">
                 </a>
-                <h4 class="account-content__title mb-3 text-capitalize">Create A Free Account</h4>
-
-                @if($site_settings_info && $site_settings_info->registration_fee > 0)
-                    <div class="alert alert-info mb-4">
-                        <strong>One-time Registration Fee: {{ number_format($site_settings_info->registration_fee, 2) }}৳</strong><br>
-                        Send Money via bKash to <strong>{{ $site_settings_info->bkash_merchant_number ?? 'N/A' }}</strong>,
-                        then enter your bKash number and Transaction ID below to unlock all downloads instantly.
-                    </div>
-                @endif
+                <h4 class="account-content__title mb-48 text-capitalize">Create A Free Account</h4>
 
                 @if(session('error'))
                     <div class="alert alert-danger mb-4">{{ session('error') }}</div>
                 @endif
-
                 @if($errors->any())
                     <div class="alert alert-danger mb-4">
                         <ul class="mb-0 ps-3">
@@ -61,36 +118,21 @@
                                 <span class="input-icon"><img src="{{ asset('frontend/assets/images/icons/envelope-icon.svg') }}" alt=""></span>
                             </div>
                         </div>
+
                         <div class="col-12">
                             <label for="your-password" class="form-label mb-2 font-18 font-heading fw-600">Password</label>
                             <div class="position-relative">
                                 <input type="password" name="password" class="common-input common-input--bg common-input--withIcon" id="your-password" placeholder="6+ characters" required>
-                                <span class="input-icon toggle-password cursor-pointer"><img src="{{ asset('frontend/assets/images/icons/lock-icon.svg') }}" alt=""></span>
+                                <span class="input-icon toggle-password cursor-pointer" id="#your-password"><img src="{{ asset('frontend/assets/images/icons/lock-icon.svg') }}" alt=""></span>
                             </div>
                         </div>
                         <div class="col-12">
                             <label for="password_confirmation" class="form-label mb-2 font-18 font-heading fw-600">Confirm Password</label>
                             <div class="position-relative">
                                 <input type="password" name="password_confirmation" class="common-input common-input--bg common-input--withIcon" id="password_confirmation" placeholder="Re-enter password" required>
-                                <span class="input-icon toggle-password cursor-pointer"><img src="{{ asset('frontend/assets/images/icons/lock-icon.svg') }}" alt=""></span>
+                                <span class="input-icon toggle-password cursor-pointer" id="#password_confirmation"><img src="{{ asset('frontend/assets/images/icons/lock-icon.svg') }}" alt=""></span>
                             </div>
                         </div>
-
-                        <div class="col-12"><hr></div>
-
-                        <div class="col-12">
-                            <label for="bkash_number" class="form-label mb-2 font-18 font-heading fw-600">Your bKash Number</label>
-                            <div class="position-relative">
-                                <input type="text" name="bkash_number" class="common-input common-input--bg common-input--withIcon" id="bkash_number" placeholder="01XXXXXXXXX" value="{{ old('bkash_number') }}" required>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <label for="bkash_transaction_id" class="form-label mb-2 font-18 font-heading fw-600">bKash Transaction ID</label>
-                            <div class="position-relative">
-                                <input type="text" name="bkash_transaction_id" class="common-input common-input--bg common-input--withIcon" id="bkash_transaction_id" placeholder="e.g. 9J7Z3XY1AB" value="{{ old('bkash_transaction_id') }}" required style="text-transform:uppercase">
-                            </div>
-                        </div>
-
                         <div class="col-12">
                             <div class="common-check my-2">
                                 <input class="form-check-input" type="checkbox" name="checkbox" id="agree" required>
@@ -102,7 +144,7 @@
                         </div>
                         <div class="col-sm-12 mb-0">
                             <div class="have-account">
-                                <p class="text font-14">Already a member? <a class="link text-main text-decoration-underline fw-500" href="{{ route('customer.login') }}">Login</a></p>
+                                <p class="text font-14">Already a member? <a class="link text-main text-decoration-underline  fw-500" href="{{ route('customer.login') }}">Login</a></p>
                             </div>
                         </div>
                     </div>
@@ -110,5 +152,20 @@
             </div>
         </div>
     </section>
+    <!-- ================================== Account Page End =========================== -->
 
-@endsection
+    <script src="{{ asset('frontend/assets/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/boostrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/countdown.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/counterup.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/slick.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/jquery.magnific-popup.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/apexchart.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/marquee.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+
+    @stack('scripts')
+
+</body>
+
+</html>
