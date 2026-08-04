@@ -11,7 +11,7 @@
     <title>@yield('frontend_title') | Nebedge</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon-two.png') }}">
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
