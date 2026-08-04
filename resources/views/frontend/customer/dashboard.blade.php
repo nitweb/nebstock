@@ -1,53 +1,110 @@
-@extends('frontend.dashboard')
-@section('frontend_title', 'My Dashboard')
-@section('frontend_contents')
+<!DOCTYPE html>
+<html lang="en">
 
-    <section class="padding-y-120">
-        <div class="container container-two">
+<head>
 
-            <div class="section-heading style-left flx-between gap-3 mb-48">
-                <div>
-                    <h3 class="section-heading__title mb-2">Welcome, {{ $customer->name }}</h3>
-                    <p class="section-heading__desc font-16 mb-0">All items are unlocked for your account.</p>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>@yield('customer_title') | Nebedge</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/fontawesome-all.min.css') }}">
+    <!-- Slick -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/slick.css') }}">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/magnific-popup.css') }}">
+    <!-- line awesome -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/line-awesome.min.css') }}">
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">
+
+</head>
+
+<body>
+
+    <!--==================== Preloader Start ====================-->
+    {{-- @include('frontend.layouts.preloader') --}}
+    <!--==================== Preloader End ====================-->
+
+    <!--==================== Overlay Start ====================-->
+    <div class="overlay"></div>
+    <!--==================== Overlay End ====================-->
+
+    <!--==================== Sidebar Overlay End ====================-->
+    <div class="side-overlay"></div>
+    <!--==================== Sidebar Overlay End ====================-->
+
+    <!-- ==================== Scroll to Top End Here ==================== -->
+    <div class="progress-wrap">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- ==================== Scroll to Top End Here ==================== -->
+
+    <!-- ==================== Mobile Menu Start Here ==================== -->
+    @include('frontend.layouts.mobile_menu')
+    <!-- ==================== Mobile Menu End Here ==================== -->
+
+    <section class="dashboard">
+        <div class="dashboard__inner d-flex">
+
+            <!-- ===================== Dashboard Sidebar Start ======================= -->
+            @include('frontend.customer.layouts.sidebar')
+            <!-- ===================== Dashboard Sidebar End ======================= -->
+
+            <div class="dashboard-body">
+
+                <!-- Dashboard Nav Start -->
+                @include('frontend.customer.layouts.header')
+                <!-- Dashboard Nav End -->
+
+
+                <div class="dashboard-body__content">
+
+                    @yield('customer_contents')
+
                 </div>
-                <div class="text-end">
-                    <span class="d-block font-14 text-body">Downloads left today</span>
-                    <h4 class="mb-0">{{ $remaining }} / {{ \App\Http\Controllers\DownloadController::DAILY_LIMIT }}</h4>
-                </div>
+
+                <!-- ====================== Dashboard Footer Start ======================== -->
+                @include('frontend.customer.layouts.footer')
+                <!-- ====================== Dashboard Footer End ======================== -->
             </div>
-
-            @if(session('success'))
-                <div class="alert alert-success mb-4">{{ session('success') }}</div>
-            @endif
-            @if(session('error'))
-                <div class="alert alert-danger mb-4">{{ session('error') }}</div>
-            @endif
-
-            <div class="row gy-4 card-wrapper">
-                @forelse($products as $product)
-                    <div class="col-xl-3 col-lg-4 col-sm-6">
-                        <div class="product-item box-shadow">
-                            <div class="product-item__thumb d-flex">
-                                <img src="{{ $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('frontend/assets/images/thumbs/product-img9.png') }}" alt="{{ $product->name }}" class="cover-img">
-                            </div>
-                            <div class="product-item__content">
-                                <h6 class="product-item__title mb-3">{{ $product->name }}</h6>
-                                <div class="product-item__bottom">
-                                    @include('frontend.partials.download_button', ['product' => $product])
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-center w-100">No products available yet.</p>
-                @endforelse
-            </div>
-
-            <div class="mt-48">
-                {{ $products->links() }}
-            </div>
-
         </div>
     </section>
 
-@endsection
+    <!-- Jquery js -->
+    <script src="{{ asset('frontend/assets/js/jquery-3.7.1.min.js') }}"></script>
+    <!-- Bootstrap Bundle Js -->
+    <script src="{{ asset('frontend/assets/js/boostrap.bundle.min.js') }}"></script>
+    <!-- CountDown -->
+    <script src="{{ asset('frontend/assets/js/countdown.js') }}"></script>
+    <!-- counter up -->
+    <script src="{{ asset('frontend/assets/js/counterup.min.js') }}"></script>
+    <!-- Slick js -->
+    <script src="{{ asset('frontend/assets/js/slick.min.js') }}"></script>
+    <!-- magnific popup -->
+    <script src="{{ asset('frontend/assets/js/jquery.magnific-popup.js') }}"></script>
+    <!-- apex chart -->
+    <script src="{{ asset('frontend/assets/js/apexchart.js') }}"></script>
+    <!-- marquee -->
+    <script src="{{ asset('frontend/assets/js/marquee.min.js') }}"></script>
+
+    <!-- main js -->
+    <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+
+    @stack('scripts')
+
+</body>
+
+</html>
