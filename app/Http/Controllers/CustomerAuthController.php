@@ -243,42 +243,8 @@ class CustomerAuthController extends Controller
         return view('frontend.customer.pages.payment', compact('customer', 'site_settings_info'));
     } // End Method
 
-    public function paymentSubmit(Request $request)
-    {
-        $customer = Auth::guard('user')->user();
-
-        $request->validate([
-            'bkash_number' => 'required|digits:11|starts_with:01',
-            'bkash_transaction_id' => 'required|alpha_num|min:8|max:15|unique:users,bkash_transaction_id',
-        ], [
-            'bkash_number.digits' => 'Enter a valid 11 digit bKash number',
-            'bkash_number.starts_with' => 'bKash number must start with 01',
-            'bkash_transaction_id.unique' => 'This bKash Transaction ID has already been used',
-        ]);
-
-        $site_settings = SiteSettings::first();
-        $registration_fee = $site_settings->registration_fee ?? 0;
-
-        // NOTE: No live bKash verification API is connected yet. For now we
-        // "auto approve" once the Transaction ID passes format + uniqueness
-        // checks above. Wire this to bKash's Verify Payment API later if the
-        // client provides merchant credentials.
-        $isValidTransaction = preg_match('/^[A-Z0-9]{8,15}$/i', $request->bkash_transaction_id);
-
-        if (!$isValidTransaction) {
-            return back()->withInput()->with('error', 'Invalid bKash Transaction ID format.');
-        }
-
-        $customer->update([
-            'bkash_number' => $request->bkash_number,
-            'bkash_transaction_id' => strtoupper($request->bkash_transaction_id),
-            'payment_amount' => $registration_fee,
-            'payment_status' => 'approved',
-            'payment_approved_at' => now(),
-        ]);
-
-        return redirect()->route('customer.dashboard')->with('success', 'Payment verified! All downloads are now unlocked.');
-    } // End Method
+    // NOTE: Manual "type your TrxID yourself" flow removed.
+    // Payment now goes through BkashDemoController (simulated bKash gateway).
 
     /* ===== Logout ===== */
     public function logout()
