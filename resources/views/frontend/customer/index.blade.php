@@ -14,10 +14,10 @@
     </div>
     <!-- welcome balance Content End -->
 
-    @if (session('success'))
+    @if(session('success'))
         <div class="alert alert-success mb-4">{{ session('success') }}</div>
     @endif
-    @if (session('error'))
+    @if(session('error'))
         <div class="alert alert-danger mb-4">{{ session('error') }}</div>
     @endif
 
@@ -104,7 +104,7 @@
         <!-- dashboard body Item Start -->
         <div class="dashboard-body__item">
 
-            <div class="row gy-4">
+           <div class="row gy-4">
 
                 <div class="col-12">
                     <div class="card common-card border border-gray-five">
@@ -134,7 +134,7 @@
                                                 <td data-label="Date">{{ $download->created_at->format('d M Y, h:i A') }}</td>
                                                 <td data-label="Product">{{ $download->product->name ?? 'Product removed' }}</td>
                                                 <td data-label="Details">
-                                                    @if ($download->product)
+                                                    @if($download->product)
                                                         <form action="{{ route('product.download', $download->product->slug) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             <button type="submit" class="btn btn-main"><i class="fas fa-download"></i></button>

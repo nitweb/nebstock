@@ -72,6 +72,14 @@
 
                 <div class="dashboard-body__content">
 
+                    @php $__payCustomer = Auth::guard('user')->user(); @endphp
+                    @if($__payCustomer && $__payCustomer->payment_status !== 'approved' && !request()->routeIs('customer.payment'))
+                        <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2 mb-24">
+                            <span>Your one-time payment is pending — downloads are locked until it's verified.</span>
+                            <a href="{{ route('customer.payment') }}" class="btn btn-main btn-sm pill">Complete Payment</a>
+                        </div>
+                    @endif
+
                     @yield('customer_contents')
 
                 </div>
@@ -102,6 +110,53 @@
 
     <!-- main js -->
     <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+
+    @if(session('limit_reached'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Daily Limit Reached',
+                        text: @json(session('error') ?? 'You have reached your daily download limit. Please wait for the next day.'),
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    alert(@json(session('error') ?? 'You have reached your daily download limit. Please wait for the next day.'));
+                }
+            });
+        </script>
+    @endif
+
+    @if(session('payment_required'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Payment Required',
+                        text: @json(session('error') ?? 'Please complete your one-time payment to unlock downloads.'),
+                        confirmButtonText: 'Pay Now'
+                    });
+                } else {
+                    alert(@json(session('error') ?? 'Please complete your one-time payment to unlock downloads.'));
+                }
+            });
+        </script>
+    @endif
+
+    <script>
+        document.addEventListener('submit', function (e) {
+            if (e.target.matches('form[action*="/download/"]')) {
+                var btn = e.target.querySelector('button[type="submit"]');
+                if (btn) {
+                    if (btn.disabled) { e.preventDefault(); return; }
+                    btn.disabled = true;
+                    setTimeout(function () { btn.disabled = false; }, 4000);
+                }
+            }
+        });
+    </script>
 
     @stack('scripts')
 

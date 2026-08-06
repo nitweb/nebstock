@@ -313,6 +313,8 @@ Route::middleware('customer')->group(function () {
     Route::get('/profile', [CustomerAuthController::class, 'profile'])->name('customer.profile');
     Route::post('/profile/update', [CustomerAuthController::class, 'profileUpdate'])->name('customer.profile.update');
     Route::get('/downloads', [CustomerAuthController::class, 'downloads'])->name('customer.downloads');
+    Route::get('/payment', [CustomerAuthController::class, 'payment'])->name('customer.payment');
+    Route::post('/payment/submit', [CustomerAuthController::class, 'paymentSubmit'])->name('customer.payment.submit');
     Route::post('/change/password', [CustomerAuthController::class, 'changePassword'])->name('customer.password.change');
     Route::get('/my-orders', [CheckoutController::class, 'myOrders'])->name('customer.orders');
     Route::get('/order/{id}/invoice', [CheckoutController::class, 'downloadInvoice'])->name('customer.order.invoice');
