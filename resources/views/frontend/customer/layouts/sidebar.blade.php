@@ -48,6 +48,16 @@
             </li>
 
             <li class="sidebar-list__item">
+                <a href="{{ route('customer.payment') }}" class="sidebar-list__link {{ request()->routeIs('customer.payment') ? 'active' : '' }}">
+                    <span class="sidebar-list__icon">
+                        <img src="{{ asset('frontend/assets/images/icons/sidebar-icon7.svg') }}" alt="" class="icon">
+                        <img src="{{ asset('frontend/assets/images/icons/sidebar-icon-active7.svg') }}" alt="" class="icon icon-active">
+                    </span>
+                    <span class="text">Payment</span>
+                </a>
+            </li>
+
+            <li class="sidebar-list__item">
                 <a href="{{ route('customer.logout') }}" class="sidebar-list__link">
                     <span class="sidebar-list__icon">
                         <img src="{{ asset('frontend/assets/images/icons/sidebar-icon13.svg') }}" alt="" class="icon">

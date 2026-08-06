@@ -1,6 +1,6 @@
 @php
     $__authUser = Auth::guard('user')->user();
-    $__canDownload = $__authUser && $__authUser->role === 'customer' && $__authUser->payment_status === 'approved';
+    $__canDownload = $__authUser && $__authUser->role === 'customer';
 @endphp
 
 @if($__canDownload)
