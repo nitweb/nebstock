@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\SiteSettingsController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\BkashDemoController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GlobalController;
@@ -302,6 +303,10 @@ Route::middleware('guest.customer')->group(function () {
 
 Route::get('/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
 
+// bKash redirects here after payment — must stay outside 'customer' middleware group
+// since it's bKash's server-side redirect, not an authenticated app request.
+Route::get('/payment/bkash/callback', [BkashDemoController::class, 'callback'])->name('customer.payment.bkash.callback');
+
 /*
 |--------------------------------------------------------------------------
 | Protected Customer Routes
@@ -314,7 +319,9 @@ Route::middleware('customer')->group(function () {
     Route::post('/profile/update', [CustomerAuthController::class, 'profileUpdate'])->name('customer.profile.update');
     Route::get('/downloads', [CustomerAuthController::class, 'downloads'])->name('customer.downloads');
     Route::get('/payment', [CustomerAuthController::class, 'payment'])->name('customer.payment');
-    Route::post('/payment/submit', [CustomerAuthController::class, 'paymentSubmit'])->name('customer.payment.submit');
+
+    // ── bKash Tokenized Checkout (real sandbox API) ──
+    Route::post('/payment/bkash/initiate', [BkashDemoController::class, 'initiate'])->name('customer.payment.bkash.initiate');
     Route::post('/change/password', [CustomerAuthController::class, 'changePassword'])->name('customer.password.change');
     Route::get('/my-orders', [CheckoutController::class, 'myOrders'])->name('customer.orders');
     Route::get('/order/{id}/invoice', [CheckoutController::class, 'downloadInvoice'])->name('customer.order.invoice');
@@ -353,4 +360,3 @@ Route::post('/newsletter/subscribe', [FrontendController::class, 'subscribe'])->
 Route::get('/newsletter/unsubscribe/{token}', [FrontendController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
 // Stripe webhook — REMOVED (no checkout/payment gateway flow)
-
