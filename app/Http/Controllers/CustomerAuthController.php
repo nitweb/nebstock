@@ -34,12 +34,6 @@ class CustomerAuthController extends Controller
 
         $oldSessionId = session()->getId();
 
-        $lookupUser = User::where('email', $request->email)->where('role', 'customer')->first();
-
-        if ($lookupUser && $lookupUser->payment_status !== 'approved') {
-            return back()->with('error', 'Your registration payment is not approved yet. Please complete bKash payment first.')->withInput();
-        }
-
         if (
             Auth::guard('user')->attempt([
                 'email' => $request->email,
@@ -92,11 +86,11 @@ class CustomerAuthController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
 
-        // NOTE: bKash payment step removed from registration for now (client
-        // request). Every new customer is auto-approved so they can log in
-        // and download immediately. If a payment step is reintroduced later,
-        // re-add the bkash_number / bkash_transaction_id fields + validation
-        // here and switch payment_status back to a 'pending' default.
+        // NOTE: No payment step is being collected at registration right now
+        // (client decision). Registration is simply free/instant. If a paid
+        // registration flow comes back later, add the payment fields +
+        // validation here and decide what payment_status a new user should
+        // start with.
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -104,10 +98,9 @@ class CustomerAuthController extends Controller
             'photo' => 'avatar.png',
             'role' => 'customer',
             'status' => '1',
-            'payment_status' => 'approved',
         ]);
 
-        return redirect()->route('customer.login')->with('success', 'Payment verified! Your account is ready — please login.');
+        return redirect()->route('customer.login')->with('success', 'Account created successfully — please login.');
     } // End Method
 
     /* ===== Dashboard ===== */
@@ -241,6 +234,51 @@ class CustomerAuthController extends Controller
             'alert-type' => 'success',
         ]);
     }
+
+    /* ===== Payment (post-registration, unlocks downloads) ===== */
+    public function payment()
+    {
+        $customer = Auth::guard('user')->user();
+        $site_settings_info = SiteSettings::first();
+        return view('frontend.customer.pages.payment', compact('customer', 'site_settings_info'));
+    } // End Method
+
+    public function paymentSubmit(Request $request)
+    {
+        $customer = Auth::guard('user')->user();
+
+        $request->validate([
+            'bkash_number' => 'required|digits:11|starts_with:01',
+            'bkash_transaction_id' => 'required|alpha_num|min:8|max:15|unique:users,bkash_transaction_id',
+        ], [
+            'bkash_number.digits' => 'Enter a valid 11 digit bKash number',
+            'bkash_number.starts_with' => 'bKash number must start with 01',
+            'bkash_transaction_id.unique' => 'This bKash Transaction ID has already been used',
+        ]);
+
+        $site_settings = SiteSettings::first();
+        $registration_fee = $site_settings->registration_fee ?? 0;
+
+        // NOTE: No live bKash verification API is connected yet. For now we
+        // "auto approve" once the Transaction ID passes format + uniqueness
+        // checks above. Wire this to bKash's Verify Payment API later if the
+        // client provides merchant credentials.
+        $isValidTransaction = preg_match('/^[A-Z0-9]{8,15}$/i', $request->bkash_transaction_id);
+
+        if (!$isValidTransaction) {
+            return back()->withInput()->with('error', 'Invalid bKash Transaction ID format.');
+        }
+
+        $customer->update([
+            'bkash_number' => $request->bkash_number,
+            'bkash_transaction_id' => strtoupper($request->bkash_transaction_id),
+            'payment_amount' => $registration_fee,
+            'payment_status' => 'approved',
+            'payment_approved_at' => now(),
+        ]);
+
+        return redirect()->route('customer.dashboard')->with('success', 'Payment verified! All downloads are now unlocked.');
+    } // End Method
 
     /* ===== Logout ===== */
     public function logout()

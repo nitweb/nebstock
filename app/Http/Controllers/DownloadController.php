@@ -24,7 +24,8 @@ class DownloadController extends Controller
         }
 
         if ($user->payment_status !== 'approved') {
-            return redirect()->route('customer.login')->with('error', 'Your payment is not approved yet.');
+            return redirect()->route('customer.payment')->with('payment_required', true)
+                ->with('error', 'Please complete your one-time payment to unlock downloads.');
         }
 
         $product = Product::where('slug', $slug)->where('status', 'active')->firstOrFail();
