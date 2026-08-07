@@ -79,11 +79,13 @@
                 <div class="footer-widget">
                     <h5 class="footer-widget__title text-white">Categories</h5>
                     <ul class="footer-lists">
-                        @foreach (GlobalCategories() ?? [] as $category)
+                        @forelse (GlobalCategories() ?? [] as $category)
                             <li class="footer-lists__item">
-                                <a href="#!" class="footer-lists__link">{{ $category->name }}</a>
+                                <a href="{{ route('product.by.category', $category->slug) }}" class="footer-lists__link">{{ $category->name }}</a>
                             </li>
-                        @endforeach
+                        @empty
+                            <li class="footer-lists__item"><span class="footer-lists__link">No categories yet</span></li>
+                        @endforelse
                     </ul>
                 </div>
             </div>

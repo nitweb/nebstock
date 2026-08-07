@@ -57,8 +57,8 @@
                                 <span>AI Prompt Generate</span>
                             </a>
                             <a href="#" class="feature-pill">
-                                <img src="{{ asset('frontend/assets/images/icons/keyword-gen-icon.png') }}" alt="" width="14" height="14">
-                                <span>Keyword Code Generator</span>
+                                <img src="{{ asset('frontend/assets/images/icons/qr-gen-icon.png') }}" alt="" width="14" height="14">
+                                <span>QR Code Generate</span>
                             </a>
                         </div>
                         <!-- Feature Pills End -->

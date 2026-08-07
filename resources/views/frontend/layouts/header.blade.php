@@ -18,60 +18,41 @@
             <!-- Menu Start  -->
             <div class="header-menu d-lg-block d-none">
 
+                @php
+                    $__headerCategories = \App\Models\Category::active()->root()
+                        ->with('recursiveChildren')
+                        ->orderBy('sort_order')
+                        ->take(6)
+                        ->get();
+                @endphp
+
                 <ul class="nav-menu flx-align ">
 
                     <li class="nav-menu__item">
                         <a href="{{ route('index') }}" class="nav-menu__link">Home</a>
                     </li>
 
-                    <li class="nav-menu__item">
-                        <a href="javascript:void(0)" class="nav-menu__link">Font</a>
-                    </li>
-
-                    <li class="nav-menu__item has-submenu">
-                        <a href="javascript:void(0)" class="nav-menu__link">Mockups</a>
-                        <ul class="nav-submenu">
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Mockup One</a>
+                    @foreach($__headerCategories as $__cat)
+                        @if($__cat->recursiveChildren->count())
+                            <li class="nav-menu__item has-submenu">
+                                <a href="{{ route('product.by.category', $__cat->slug) }}" class="nav-menu__link">{{ $__cat->name }}</a>
+                                <ul class="nav-submenu">
+                                    @foreach($__cat->recursiveChildren as $__child)
+                                        <li class="nav-submenu__item">
+                                            <a href="{{ route('product.by.category', $__child->slug) }}" class="nav-submenu__link"> {{ $__child->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </li>
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Mockup Two</a>
+                        @else
+                            <li class="nav-menu__item">
+                                <a href="{{ route('product.by.category', $__cat->slug) }}" class="nav-menu__link">{{ $__cat->name }}</a>
                             </li>
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Mockup Three</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-menu__item has-submenu">
-                        <a href="javascript:void(0)" class="nav-menu__link">Vectors</a>
-                        <ul class="nav-submenu">
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Vector One</a>
-                            </li>
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Vector Two</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-menu__item has-submenu">
-                        <a href="javascript:void(0)" class="nav-menu__link">Video Editing</a>
-                        <ul class="nav-submenu">
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Video Editing One</a>
-                            </li>
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Video Editing Two</a>
-                            </li>
-                            <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Video Editing Three</a>
-                            </li>
-                        </ul>
-                    </li>
+                        @endif
+                    @endforeach
 
                     <li class="nav-menu__item">
-                        <a href="javascript:void(0)" class="nav-menu__link">Web Theme</a>
+                        <a href="{{ route('shop') }}" class="nav-menu__link">Shop</a>
                     </li>
 
                     <li class="nav-menu__item">

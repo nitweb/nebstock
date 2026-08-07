@@ -1,5 +1,5 @@
 @extends('frontend.dashboard')
-@section('frontend_title', 'Shop')
+@section('frontend_title', $categoryInfo->name)
 @section('frontend_contents')
 
     {{-- Breadcrumb Section --}}
@@ -18,11 +18,18 @@
                                 <li class="breadcrumb-list__item font-14 text-body">
                                     <span class="breadcrumb-list__icon font-10"><i class="fas fa-chevron-right"></i></span>
                                 </li>
-                                <li class="breadcrumb-list__item font-14 text-body">
-                                    <span class="breadcrumb-list__text">Shop</span>
-                                </li>
+                                @foreach($categoryInfo->breadcrumb() as $crumb)
+                                    <li class="breadcrumb-list__item font-14 text-body">
+                                        @if($crumb->id === $categoryInfo->id)
+                                            <span class="breadcrumb-list__text">{{ $crumb->name }}</span>
+                                        @else
+                                            <a href="{{ route('product.by.category', $crumb->slug) }}" class="breadcrumb-list__link text-body hover-text-main">{{ $crumb->name }}</a>
+                                            <span class="breadcrumb-list__icon font-10 ms-2"><i class="fas fa-chevron-right"></i></span>
+                                        @endif
+                                    </li>
+                                @endforeach
                             </ul>
-                            <h3 class="breadcrumb-two-content__title mb-0 text-capitalize">Shop</h3>
+                            <h3 class="breadcrumb-two-content__title mb-0 text-capitalize">{{ $categoryInfo->name }}</h3>
                         </div>
                     </div>
                 </div>
@@ -33,7 +40,7 @@
     {{-- Product Section --}}
     <section class="all-product padding-y-120">
         <div class="container container-two">
-            <form id="shopFilterForm" method="GET" action="{{ route('shop') }}">
+            <form id="shopFilterForm" method="GET" action="{{ route('product.by.category', $categoryInfo->slug) }}">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="filter-tab gap-3 flx-between">
@@ -53,7 +60,7 @@
                                     <button type="button" class="text-body font-14 shop-clear-input" data-target="tag">Clear</button>
                                 </div>
                                 <div class="position-relative">
-                                    <input type="text" name="q" value="{{ request('q') }}" class="common-input border-gray-five common-input--withLeftIcon" id="tag" placeholder="Search products...">
+                                    <input type="text" name="q" value="{{ request('q') }}" class="common-input border-gray-five common-input--withLeftIcon" id="tag" placeholder="Search in {{ $categoryInfo->name }}...">
                                     <span class="input-icon input-icon--left"><img src="{{ asset('frontend/assets/images/icons/search-two.svg') }}" alt=""></span>
                                 </div>
                             </div>
@@ -84,93 +91,27 @@
                     <div class="filter-sidebar">
                         <button type="button" class="filter-sidebar__close p-2 position-absolute end-0 top-0 z-index-1 text-body hover-text-main font-20 d-lg-none d-block"><i class="las la-times"></i></button>
                         <div class="filter-sidebar__item">
-                            <button type="button" class="filter-sidebar__button font-16 text-capitalize fw-500">Category</button>
+                            <button type="button" class="filter-sidebar__button font-16 text-capitalize fw-500">Categories</button>
                             <div class="filter-sidebar__content">
                                 <ul class="filter-sidebar-list">
                                     <li class="filter-sidebar-list__item">
-                                        <div class="filter-sidebar-list__text">
-                                            <div class="common-check common-radio">
-                                                <input class="form-check-input shop-category-radio" type="radio" name="category" id="catAll" value="" {{ request('category') ? '' : 'checked' }}>
-                                                <label class="form-check-label" for="catAll"> All Categories</label>
-                                            </div>
-                                            <span class="qty">{{ $totalProductCount }}</span>
-                                        </div>
+                                        <a href="{{ route('shop') }}" class="filter-sidebar-list__text">
+                                            All Categories
+                                        </a>
                                     </li>
                                     @foreach($categories as $cat)
                                         <li class="filter-sidebar-list__item">
-                                            <div class="filter-sidebar-list__text">
-                                                <div class="common-check common-radio">
-                                                    <input class="form-check-input shop-category-radio" type="radio" name="category" id="cat{{ $cat->id }}" value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="cat{{ $cat->id }}"> {{ $cat->name }}</label>
-                                                </div>
-                                                <span class="qty">{{ $cat->products_count ?? 0 }}</span>
-                                            </div>
+                                            <a href="{{ route('product.by.category', $cat->slug) }}" class="filter-sidebar-list__text {{ $cat->id === $categoryInfo->id ? 'fw-700 text-main' : '' }}">
+                                                {{ $cat->name }}
+                                            </a>
                                         </li>
                                         @foreach($cat->recursiveChildren as $child)
                                             <li class="filter-sidebar-list__item ps-3">
-                                                <div class="filter-sidebar-list__text">
-                                                    <div class="common-check common-radio">
-                                                        <input class="form-check-input shop-category-radio" type="radio" name="category" id="cat{{ $child->id }}" value="{{ $child->slug }}" {{ request('category') == $child->slug ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="cat{{ $child->id }}"> {{ $child->name }}</label>
-                                                    </div>
-                                                    <span class="qty">{{ $child->products_count ?? 0 }}</span>
-                                                </div>
+                                                <a href="{{ route('product.by.category', $child->slug) }}" class="filter-sidebar-list__text {{ $child->id === $categoryInfo->id ? 'fw-700 text-main' : '' }}">
+                                                    {{ $child->name }}
+                                                </a>
                                             </li>
                                         @endforeach
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-
-                        @if($authors->count())
-                        <div class="filter-sidebar__item">
-                            <button type="button" class="filter-sidebar__button font-16 text-capitalize fw-500">Author</button>
-                            <div class="filter-sidebar__content">
-                                <ul class="filter-sidebar-list">
-                                    <li class="filter-sidebar-list__item">
-                                        <div class="filter-sidebar-list__text">
-                                            <div class="common-check common-radio">
-                                                <input class="form-check-input shop-author-radio" type="radio" name="author" id="authorAll" value="" {{ request('author') ? '' : 'checked' }}>
-                                                <label class="form-check-label" for="authorAll"> All Authors</label>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    @foreach($authors as $author)
-                                        <li class="filter-sidebar-list__item">
-                                            <div class="filter-sidebar-list__text">
-                                                <div class="common-check common-radio">
-                                                    <input class="form-check-input shop-author-radio" type="radio" name="author" id="author{{ $author->id }}" value="{{ $author->slug }}" {{ request('author') == $author->slug ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="author{{ $author->id }}"> {{ $author->name }}</label>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        @endif
-
-                        <div class="filter-sidebar__item">
-                            <button type="button" class="filter-sidebar__button font-16 text-capitalize fw-500">Product Type</button>
-                            <div class="filter-sidebar__content">
-                                <ul class="filter-sidebar-list">
-                                    <li class="filter-sidebar-list__item">
-                                        <div class="filter-sidebar-list__text">
-                                            <div class="common-check common-radio">
-                                                <input class="form-check-input shop-type-radio" type="radio" name="type" id="typeAll" value="" {{ request('type') ? '' : 'checked' }}>
-                                                <label class="form-check-label" for="typeAll"> All Types</label>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    @foreach(\App\Models\Product::productTypes() as $key => $label)
-                                        <li class="filter-sidebar-list__item">
-                                            <div class="filter-sidebar-list__text">
-                                                <div class="common-check common-radio">
-                                                    <input class="form-check-input shop-type-radio" type="radio" name="type" id="type{{ $key }}" value="{{ $key }}" {{ request('type') == $key ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="type{{ $key }}"> {{ $label }}</label>
-                                                </div>
-                                            </div>
-                                        </li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -255,20 +196,17 @@
         }
         bindPaginationLinks();
 
-        // Auto-filter on category/author/type radio change and sort dropdown
-        form.querySelectorAll('.shop-category-radio, .shop-author-radio, .shop-type-radio, #sort').forEach(function (el) {
+        form.querySelectorAll('#sort').forEach(function (el) {
             el.addEventListener('change', function () {
                 loadProducts(buildUrlFromForm());
             });
         });
 
-        // Submit on Enter / price filter
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             loadProducts(buildUrlFromForm());
         });
 
-        // Clear individual inputs
         document.querySelectorAll('.shop-clear-input').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 const target = document.getElementById(this.dataset.target);
