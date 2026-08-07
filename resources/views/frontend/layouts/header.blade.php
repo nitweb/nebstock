@@ -56,16 +56,16 @@
                     </li>
 
                     <li class="nav-menu__item has-submenu">
-                        <a href="javascript:void(0)" class="nav-menu__link">Animation</a>
+                        <a href="javascript:void(0)" class="nav-menu__link">Video Editing</a>
                         <ul class="nav-submenu">
                             <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Animation One</a>
+                                <a href="javascript:void(0)" class="nav-submenu__link"> Video Editing One</a>
                             </li>
                             <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Animation Two</a>
+                                <a href="javascript:void(0)" class="nav-submenu__link"> Video Editing Two</a>
                             </li>
                             <li class="nav-submenu__item">
-                                <a href="javascript:void(0)" class="nav-submenu__link"> Animation Three</a>
+                                <a href="javascript:void(0)" class="nav-submenu__link"> Video Editing Three</a>
                             </li>
                         </ul>
                     </li>

@@ -62,7 +62,7 @@ class FrontendController extends Controller
         $latest_products = Product::with(['authors', 'categories', 'galleryImages'])
             ->active()
             ->latest()
-            ->take(8)
+            ->take(28)
             ->get();
 
         $blogs = Blog::where('blog_status', 'active')->latest()->take(3)->get();

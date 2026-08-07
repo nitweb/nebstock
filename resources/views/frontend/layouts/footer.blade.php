@@ -1,11 +1,6 @@
-{{-- Brand Section --}}
-@include('frontend.home.09_brand')
-
-<footer class="footer-section ">
+<footer class="footer-section">
 
     <img src="{{ asset('frontend/assets/images/shapes/pattern.png') }}" alt="" class="bg-pattern">
-    <img src="{{ asset('frontend/assets/images/shapes/element1.png') }}" alt="" class="element one">
-    <img src="{{ asset('frontend/assets/images/shapes/element2.png') }}" alt="" class="element two">
     <img src="{{ asset('frontend/assets/images/gradients/footer-gradient.png') }}" alt="" class="bg--gradient">
 
     <div class="container container-two">
@@ -21,36 +16,36 @@
                     </div>
                     <p class="footer-widget__desc">{{ GlobalSiteSettings()->site_description }}</p>
 
-                    @if(GlobalSiteSettings()->site_facebook || GlobalSiteSettings()->site_twitter || GlobalSiteSettings()->site_linkedin || GlobalSiteSettings()->site_pinterest || GlobalSiteSettings()->site_youtube)
-                    <div class="footer-widget__social">
-                        <ul class="social-icon-list">
-                            @if(GlobalSiteSettings()->site_facebook)
-                            <li class="social-icon-list__item">
-                                <a href="{{ GlobalSiteSettings()->site_facebook }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-facebook-f"></i></a>
-                            </li>
-                            @endif
-                            @if(GlobalSiteSettings()->site_twitter)
-                            <li class="social-icon-list__item">
-                                <a href="{{ GlobalSiteSettings()->site_twitter }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-twitter"></i></a>
-                            </li>
-                            @endif
-                            @if(GlobalSiteSettings()->site_linkedin)
-                            <li class="social-icon-list__item">
-                                <a href="{{ GlobalSiteSettings()->site_linkedin }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-linkedin-in"></i></a>
-                            </li>
-                            @endif
-                            @if(GlobalSiteSettings()->site_pinterest)
-                            <li class="social-icon-list__item">
-                                <a href="{{ GlobalSiteSettings()->site_pinterest }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-pinterest-p"></i></a>
-                            </li>
-                            @endif
-                            @if(GlobalSiteSettings()->site_youtube)
-                            <li class="social-icon-list__item">
-                                <a href="{{ GlobalSiteSettings()->site_youtube }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-youtube"></i></a>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
+                    @if (GlobalSiteSettings()->site_facebook || GlobalSiteSettings()->site_twitter || GlobalSiteSettings()->site_linkedin || GlobalSiteSettings()->site_pinterest || GlobalSiteSettings()->site_youtube)
+                        <div class="footer-widget__social">
+                            <ul class="social-icon-list">
+                                @if (GlobalSiteSettings()->site_facebook)
+                                    <li class="social-icon-list__item">
+                                        <a href="{{ GlobalSiteSettings()->site_facebook }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-facebook-f"></i></a>
+                                    </li>
+                                @endif
+                                @if (GlobalSiteSettings()->site_twitter)
+                                    <li class="social-icon-list__item">
+                                        <a href="{{ GlobalSiteSettings()->site_twitter }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-twitter"></i></a>
+                                    </li>
+                                @endif
+                                @if (GlobalSiteSettings()->site_linkedin)
+                                    <li class="social-icon-list__item">
+                                        <a href="{{ GlobalSiteSettings()->site_linkedin }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-linkedin-in"></i></a>
+                                    </li>
+                                @endif
+                                @if (GlobalSiteSettings()->site_pinterest)
+                                    <li class="social-icon-list__item">
+                                        <a href="{{ GlobalSiteSettings()->site_pinterest }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-pinterest-p"></i></a>
+                                    </li>
+                                @endif
+                                @if (GlobalSiteSettings()->site_youtube)
+                                    <li class="social-icon-list__item">
+                                        <a href="{{ GlobalSiteSettings()->site_youtube }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-youtube"></i></a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -66,7 +61,9 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-sm-6 col-xs-6 ps-xl-5">
+            <div class="col-xl-1 d-xl-block d-none"></div>
+
+            <div class="col-xl-3 col-sm-6 col-xs-6">
                 <div class="footer-widget">
                     <h5 class="footer-widget__title text-white">Quick Links</h5>
                     <ul class="footer-lists">
@@ -78,15 +75,16 @@
                 </div>
             </div>
 
-            <div class="col-xl-4 col-sm-6">
+            <div class="col-xl-3 col-sm-6 col-xs-6">
                 <div class="footer-widget">
-                    <h5 class="footer-widget__title text-white">Subscribe</h5>
-                    <p class="footer-widget__desc">Subscribe our newsletter to get updated the latest news</p>
-                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-4 subscribe-box d-flex align-items-center flex-column gap-2">
-                        @csrf
-                        <input type="email" name="email" class="form-control common-input pill text-white" placeholder="Enter Mail" required>
-                        <button type="submit" class="btn btn-main btn-lg w-100 pill">Subscribe Now</button>
-                    </form>
+                    <h5 class="footer-widget__title text-white">Categories</h5>
+                    <ul class="footer-lists">
+                        @foreach (GlobalCategories() ?? [] as $category)
+                            <li class="footer-lists__item">
+                                <a href="#!" class="footer-lists__link">{{ $category->name }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
 
@@ -109,37 +107,3 @@
         </div>
     </div>
 </div>
-
-@if(session('limit_reached'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Daily Limit Reached',
-                    text: @json(session('error') ?? 'You have reached your daily download limit. Please wait for the next day.'),
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                alert(@json(session('error') ?? 'You have reached your daily download limit. Please wait for the next day.'));
-            }
-        });
-    </script>
-@endif
-
-<script>
-    // Prevent double-submit on download forms (extra safety against double click / double tap)
-    document.addEventListener('submit', function (e) {
-        if (e.target.matches('form[action*="/download/"]')) {
-            var btn = e.target.querySelector('button[type="submit"]');
-            if (btn) {
-                if (btn.disabled) {
-                    e.preventDefault();
-                    return;
-                }
-                btn.disabled = true;
-                setTimeout(function () { btn.disabled = false; }, 4000);
-            }
-        }
-    });
-</script>
