@@ -11,31 +11,14 @@
                         <p class="hero-inner__desc font-18">Explore the best premium themes and plugins available for sale. Our unique collection is hand-curated by experts. Find and buy the perfect premium theme today.</p>
 
                         <div class="position-relative">
-                            <div class="search-box">
-                                <input type="text" class="common-input common-input--lg pill shadow-sm auto-suggestion-input" placeholder="Search theme, plugins & more...">
-                                <button type="submit" class="btn btn-main btn-icon icon border-0"><img src="{{ asset('frontend/assets/images/icons/search.svg') }}" alt=""></button>
-                            </div>
+                            <form action="{{ route('shop') }}" method="GET" id="heroSearchForm">
+                                <div class="search-box">
+                                    <input type="text" name="q" id="heroSearchInput" class="common-input common-input--lg pill shadow-sm auto-suggestion-input" placeholder="Search theme, plugins & more..." autocomplete="off">
+                                    <button type="submit" class="btn btn-main btn-icon icon border-0"><img src="{{ asset('frontend/assets/images/icons/search.svg') }}" alt=""></button>
+                                </div>
+                            </form>
 
-                            <ul class="auto-suggestion-list">
-                                <li>
-                                    <a href="#" class="auto-suggestion-list__item w-100 text-body">Business in HTML</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="auto-suggestion-list__item w-100 text-body">Business in WordPress</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="auto-suggestion-list__item w-100 text-body">Business in CMS</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="auto-suggestion-list__item w-100 text-body">Ecommerce in HTML</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="auto-suggestion-list__item w-100 text-body">Ecommerce in WordPress</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="auto-suggestion-list__item w-100 text-body">Ecommerce in CMS</a>
-                                </li>
-                            </ul>
+                            <ul class="auto-suggestion-list" id="heroSuggestionList"></ul>
                         </div>
 
                         <!-- Feature Pills Start -->
@@ -57,8 +40,8 @@
                                 <span>AI Prompt Generate</span>
                             </a>
                             <a href="#" class="feature-pill">
-                                <img src="{{ asset('frontend/assets/images/icons/keyword-gen-icon.png') }}" alt="" width="14" height="14">
-                                <span>Keyword Code Generator</span>
+                                <img src="{{ asset('frontend/assets/images/icons/qr-gen-icon.png') }}" alt="" width="14" height="14">
+                                <span>QR Code Generate</span>
                             </a>
                         </div>
                         <!-- Feature Pills End -->
@@ -87,7 +70,74 @@
     </div>
 </section>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('heroSearchInput');
+    const list = document.getElementById('heroSuggestionList');
+    const form = document.getElementById('heroSearchForm');
+    let debounceTimer;
+
+    function hideList() {
+        list.classList.remove('show');
+        list.innerHTML = '';
+    }
+
+    input.addEventListener('input', function () {
+        const query = input.value.trim();
+        clearTimeout(debounceTimer);
+
+        if (query.length < 2) {
+            hideList();
+            return;
+        }
+
+        debounceTimer = setTimeout(function () {
+            fetch(`{{ route('ajax.search') }}?query=${encodeURIComponent(query)}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            .then(res => res.json())
+            .then(data => {
+                list.innerHTML = '';
+                if (!data.products || data.products.length === 0) {
+                    list.innerHTML = '<li><span class="auto-suggestion-list__item w-100 text-body">No products found</span></li>';
+                    list.classList.add('show');
+                    return;
+                }
+                data.products.forEach(function (product) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="{{ route('shop') }}?q=${encodeURIComponent(product.name)}" class="auto-suggestion-list__item w-100 text-body d-flex align-items-center gap-2">
+                        <img src="${product.coverImage}" alt="" width="32" height="32" style="object-fit:cover;border-radius:4px;">
+                        <span>${product.name}${product.authorNames ? ' <small class="text-muted">by ' + product.authorNames + '</small>' : ''}</span>
+                    </a>`;
+                    list.appendChild(li);
+                });
+                list.classList.add('show');
+            })
+            .catch(() => hideList());
+        }, 300);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!form.contains(e.target) && !list.contains(e.target)) {
+            hideList();
+        }
+    });
+
+    form.addEventListener('submit', function (e) {
+        if (!input.value.trim()) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+
 <style>
+.auto-suggestion-list {
+    display: none;
+}
+.auto-suggestion-list.show {
+    display: block;
+}
 .feature-pill-list {
     margin-top: 20px;
 }
