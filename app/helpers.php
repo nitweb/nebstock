@@ -9,3 +9,10 @@ if (!function_exists('GlobalSiteSettings')) {
         return $site_settings_info;
     }
 }
+
+if (!function_exists('GlobalCategories')) {
+    function GlobalCategories()
+    {
+        return \App\Models\Category::active()->root()->orderBy('sort_order')->take(5)->get();
+    }
+}

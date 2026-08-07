@@ -12,16 +12,16 @@
     @include('frontend.home.03_arrival_product')
 
     {{-- Featured Products --}}
-    @include('frontend.home.04_featured_products')
+    {{-- @include('frontend.home.04_featured_products') --}}
 
     {{-- Selling Products --}}
-    @include('frontend.home.05_selling_products')
+    {{-- @include('frontend.home.05_selling_products') --}}
 
     {{-- To Featured Author --}}
-    @include('frontend.home.06_top_featured_author')
+    {{-- @include('frontend.home.06_top_featured_author') --}}
 
     {{-- Top performance Author --}}
-    @include('frontend.home.07_top_performance')
+    {{-- @include('frontend.home.07_top_performance') --}}
 
     {{-- Become seller section --}}
     @include('frontend.home.08_become_seller')
