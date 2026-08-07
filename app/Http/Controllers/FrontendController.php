@@ -87,6 +87,20 @@ class FrontendController extends Controller
     public function Shop(Request $request)
     {
         $categories = Category::active()->root()->with('recursiveChildren')->orderBy('sort_order')->get();
+
+        // Attach a product count to each category (including its descendants)
+        $__attachCounts = function ($cats) use (&$__attachCounts) {
+            foreach ($cats as $cat) {
+                $cat->products_count = Product::active()->whereHas('categories', fn($q) => $q->whereIn('categories.id', $cat->allDescendantIds()))->count();
+                if ($cat->recursiveChildren->count()) {
+                    $__attachCounts($cat->recursiveChildren);
+                }
+            }
+        };
+        $__attachCounts($categories);
+
+        $totalProductCount = Product::active()->count();
+
         $authors = Author::active()->orderBy('name')->get();
         $top_sell_product = Product::with(['authors'])
             ->active()
@@ -96,6 +110,11 @@ class FrontendController extends Controller
             ->get();
 
         $query = Product::with(['authors', 'categories', 'galleryImages'])->active();
+
+        // Search filter
+        if ($request->filled('q')) {
+            $query->where('name', 'like', '%' . $request->q . '%');
+        }
 
         // Price filter
         if ($request->filled('min_price')) {
@@ -154,7 +173,7 @@ class FrontendController extends Controller
                 ->toArray();
         }
 
-        return view('frontend.pages.shop', compact('categories', 'authors', 'products', 'top_sell_product', 'wishlistedIds'));
+        return view('frontend.pages.shop', compact('categories', 'authors', 'products', 'top_sell_product', 'wishlistedIds', 'totalProductCount'));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -193,9 +212,14 @@ class FrontendController extends Controller
         // all children সহ category ids
         $catIds = $categoryInfo->allDescendantIds();
 
-        $query = Product::with(['authors', 'galleryImages'])
+        $query = Product::with(['authors', 'categories', 'galleryImages'])
             ->active()
             ->whereHas('categories', fn($q) => $q->whereIn('categories.id', $catIds));
+
+        // search filter
+        if ($request->filled('q')) {
+            $query->where('name', 'like', '%' . $request->q . '%');
+        }
 
         // price filter
         if ($request->filled('min_price')) {
@@ -210,12 +234,26 @@ class FrontendController extends Controller
         match ($request->get('sort', 'latest')) {
             'price_asc' => $query->orderBy('price', 'asc'),
             'price_desc' => $query->orderBy('price', 'desc'),
+            'name_asc' => $query->orderBy('name', 'asc'),
             default => $query->latest(),
         };
 
         $products = $query->paginate(12)->withQueryString();
 
-        $categories = Category::active()->root()->with('children')->orderBy('sort_order')->get();
+        // AJAX: return only product grid + pagination HTML (same shape as Shop())
+        if ($request->ajax()) {
+            $grid = view('frontend.pages.partials.shop_grid', compact('products'))->render();
+            $pagination = view('frontend.pages.partials.shop_pagination', compact('products'))->render();
+            return response()->json([
+                'grid' => $grid,
+                'pagination' => $pagination,
+                'total' => $products->total(),
+                'from' => $products->firstItem() ?? 0,
+                'to' => $products->lastItem() ?? 0,
+            ]);
+        }
+
+        $categories = Category::active()->root()->with('recursiveChildren')->orderBy('sort_order')->get();
 
         $top_sell_product = Product::active()->inStock()->latest()->take(5)->get();
 

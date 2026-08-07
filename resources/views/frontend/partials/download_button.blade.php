@@ -11,5 +11,7 @@
         </button>
     </form>
 @else
-    {{-- Button hidden for guests / unapproved users, as required --}}
+    <a href="{{ route('customer.login') }}" class="btn btn-outline-light btn-sm pill download-btn">
+        <i class="fas fa-download me-1"></i> Download
+    </a>
 @endif
