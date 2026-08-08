@@ -2,8 +2,6 @@
 
     <img src="{{ asset('frontend/assets/images/gradients/product-gradient.png') }}" alt="" class="bg--gradient white-version">
 
-    <img src="{{ asset('frontend/assets/images/shapes/element2.png') }}" alt="" class="element one">
-
     <div class="container container-two">
 
         <div class="section-heading">
