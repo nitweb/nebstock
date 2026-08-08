@@ -36,9 +36,9 @@
     <!-- line awesome -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/line-awesome.min.css') }}">
     <!-- Main css -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
-    <!-- Custom css -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}?v={{ filemtime(public_path('frontend/assets/css/main.css')) }}">
+
+<link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}?v={{ filemtime(public_path('frontend/assets/css/custom.css')) }}">
 
 </head>
 
@@ -110,7 +110,7 @@
     <script src="{{ asset('frontend/assets/js/marquee.min.js') }}"></script>
 
     <!-- main js -->
-    <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/main.js') }}?v={{ filemtime(public_path('frontend/assets/js/main.js')) }}"></script>
 
     @stack('scripts')
 
