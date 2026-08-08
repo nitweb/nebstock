@@ -74,6 +74,12 @@
 
     </main>
 
+    <!-- ==================== WhatsApp Floating Icon Start ==================== -->
+    <a href="https://wa.me/8801628533023" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <!-- ==================== WhatsApp Floating Icon End ==================== -->
+
     <!-- Jquery js -->
     <script src="{{ asset('frontend/assets/js/jquery-3.7.1.min.js') }}"></script>
     <!-- Bootstrap Bundle Js -->
@@ -94,7 +100,7 @@
     <!-- main js -->
     <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
 
-     @stack('scripts')
+    @stack('scripts')
 
 </body>
 
