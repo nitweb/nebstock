@@ -8,10 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>@yield('frontend_title') | Nebedge</title>
+    <title>@yield('frontend_title') | nebstock</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">
+
+    <!-- Open Graph / Social Share -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="nebstock">
+    <meta property="og:title" content="@yield('frontend_title') | nebstock">
+    <meta property="og:description" content="{{ GlobalSiteSettings()->site_description ?? '' }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset(GlobalSiteSettings()->site_header_logo) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('frontend_title') | nebstock">
+    <meta name="twitter:description" content="{{ GlobalSiteSettings()->site_description ?? '' }}">
+    <meta name="twitter:image" content="{{ asset(GlobalSiteSettings()->site_header_logo) }}">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
