@@ -19,11 +19,11 @@
     <meta property="og:title" content="@yield('frontend_title') | nebstock">
     <meta property="og:description" content="{{ GlobalSiteSettings()->site_description ?? '' }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset(GlobalSiteSettings()->site_header_logo) }}">
+    <meta property="og:image" content="{{ asset('frontend/assets/images/logo/og.png') }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('frontend_title') | nebstock">
     <meta name="twitter:description" content="{{ GlobalSiteSettings()->site_description ?? '' }}">
-    <meta name="twitter:image" content="{{ asset(GlobalSiteSettings()->site_header_logo) }}">
+    <meta name="twitter:image" content="{{ asset('frontend/assets/images/logo/og.png') }}">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
