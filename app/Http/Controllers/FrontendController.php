@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\AboutCompany;
-use App\Models\Author;
 use App\Models\Blog;
 use App\Models\BulkOrder;
 use App\Models\Category;
@@ -67,17 +66,20 @@ class FrontendController extends Controller
 
         $blogs = Blog::where('blog_status', 'active')->latest()->take(3)->get();
 
-        // Top featured author (home section 06)
-        $top_author = Author::where('status', 'active')->latest()->first();
-
         // Site-wide stats (home section 07)
         $total_products     = Product::active()->count();
         $total_subscribers  = Newsletter::count();
         $total_downloads    = Order::count();
 
         return view('frontend.index', compact(
-            'slider_data', 'categories', 'featured_products', 'latest_products', 'blogs',
-            'top_author', 'total_products', 'total_subscribers', 'total_downloads'
+            'slider_data',
+            'categories',
+            'featured_products',
+            'latest_products',
+            'blogs',
+            'total_products',
+            'total_subscribers',
+            'total_downloads'
         ));
     }
 
@@ -101,15 +103,13 @@ class FrontendController extends Controller
 
         $totalProductCount = Product::active()->count();
 
-        $authors = Author::active()->orderBy('name')->get();
-        $top_sell_product = Product::with(['authors'])
-            ->active()
+        $top_sell_product = Product::active()
             // ->inStock()
             ->latest()
             ->take(5)
             ->get();
 
-        $query = Product::with(['authors', 'categories', 'galleryImages'])->active();
+        $query = Product::with(['categories', 'galleryImages'])->active();
 
         // Search filter
         if ($request->filled('q')) {
@@ -131,11 +131,6 @@ class FrontendController extends Controller
                 $catIds = $cat->allDescendantIds(); // includes self
                 $query->whereHas('categories', fn($q) => $q->whereIn('categories.id', $catIds));
             }
-        }
-
-        // Author filter
-        if ($request->filled('author')) {
-            $query->whereHas('authors', fn($q) => $q->where('slug', $request->author));
         }
 
         // Product type filter
@@ -173,7 +168,7 @@ class FrontendController extends Controller
                 ->toArray();
         }
 
-        return view('frontend.pages.shop', compact('categories', 'authors', 'products', 'top_sell_product', 'wishlistedIds', 'totalProductCount'));
+        return view('frontend.pages.shop', compact('categories', 'products', 'top_sell_product', 'wishlistedIds', 'totalProductCount'));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -263,20 +258,6 @@ class FrontendController extends Controller
     // ─────────────────────────────────────────────────────────────────────────
     //  PRODUCTS BY AUTHOR
     // ─────────────────────────────────────────────────────────────────────────
-    public function ProductByAuthor(Request $request, $slug)
-    {
-        $author = Author::active()->where('slug', $slug)->firstOrFail();
-
-        $products = Product::with(['authors', 'categories', 'galleryImages'])
-            ->active()
-            ->whereHas('authors', fn($q) => $q->where('authors.id', $author->id))
-            ->latest()
-            ->paginate(12)
-            ->withQueryString();
-
-        return view('frontend.pages.product_by_author', compact('author', 'products'));
-    }
-
     // ─────────────────────────────────────────────────────────────────────────
     //  BULK ORDER SUBMIT
     // ─────────────────────────────────────────────────────────────────────────

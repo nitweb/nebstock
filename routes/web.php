@@ -3,7 +3,6 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\Backend\AboutCompanyController;
-use App\Http\Controllers\Backend\AuthorController;
 use App\Http\Controllers\Backend\BlogCategoriesController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BulkOrderController;
@@ -102,9 +101,6 @@ Route::middleware('web')->group(function () {
     // ── Public: Submit Review (outside admin middleware) ──────────────────────────
     // Route::post('/product/review', [ProductReviewController::class, 'storeReview'])->name('product.review.store');
 
-    // Product By Author
-    Route::get('/author/{slug}', [FrontendController::class, 'ProductByAuthor'])->name('product.by.author');
-
     // Checkout tax-rate — REMOVED (no checkout flow)
 });
 
@@ -142,20 +138,6 @@ Route::middleware('admin')->group(function () {
             Route::post('/update', [CategoryController::class, 'CategoryUpdate'])->name('update');
             Route::get('/delete/{id}', [CategoryController::class, 'CategoryDelete'])->name('delete');
             Route::post('/ajax-store', [CategoryController::class, 'CategoryAjaxStore'])->name('ajax_store'); // ← NEW
-        });
-
-    // ── Authors ───────────────────────────────────────────────────────────────────
-    Route::prefix('backend/authors')
-        ->name('backend.authors.')
-        ->group(function () {
-            Route::get('/list', [AuthorController::class, 'AuthorList'])->name('list');
-            Route::get('/add', [AuthorController::class, 'AuthorAdd'])->name('add');
-            Route::post('/store', [AuthorController::class, 'AuthorStore'])->name('store');
-            Route::get('/edit/{id}', [AuthorController::class, 'AuthorEdit'])->name('edit');
-            Route::post('/update', [AuthorController::class, 'AuthorUpdate'])->name('update');
-            Route::get('/delete/{id}', [AuthorController::class, 'AuthorDelete'])->name('delete');
-            Route::get('/search', [AuthorController::class, 'AuthorSearch'])->name('search');
-            Route::post('/ajax-store', [AuthorController::class, 'AuthorAjaxStore'])->name('ajax_store'); // ← NEW
         });
 
     // ── Products ──────────────────────────────────────────────────────────────────
