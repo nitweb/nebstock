@@ -32,7 +32,6 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('backend.categories.list') }}">Category List</a></li>
-                        <li><a href="{{ route('backend.authors.list') }}">Author List</a></li>
                         <li><a href="{{ route('backend.products.list') }}">Product List</a></li>
                     </ul>
                 </li>
