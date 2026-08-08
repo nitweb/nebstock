@@ -3,8 +3,6 @@
     <img src="{{ asset('frontend/assets/images/shapes/spider-net-white.png') }}" alt="" class="spider-net position-absolute top-0 end-0 z-index--1 dark-version">
     <img src="{{ asset('frontend/assets/images/shapes/pattern-curve-four.png') }}" alt="" class="position-absolute top-0 start-0 z-index--1">
 
-    <img src="{{ asset('frontend/assets/images/shapes/element2.png') }}" alt="" class="element two">
-
     <div class="container container-two">
         <div class="row gy-4 align-items-center flex-wrap-reverse">
             <div class="col-lg-7 pe-lg-5">
@@ -45,7 +43,7 @@
                         <h3 class="section-heading__title">Top Performance</h3>
                         <p class="section-heading__desc font-18 w-sm">Every month we pick some best products for you. This month's best web themes & templates have arrived, chosen by our content specialists.</p>
                     </div>
-                    <a href="javascript:void(0)" class="btn btn-main btn-lg pill fw-300"> Get Started </a>
+                    <a href="{{ route('shop') }}" class="btn btn-main btn-lg pill fw-300"> Get Started </a>
                 </div>
             </div>
         </div>

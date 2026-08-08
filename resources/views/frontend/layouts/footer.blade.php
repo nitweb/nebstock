@@ -16,37 +16,25 @@
                     </div>
                     <p class="footer-widget__desc">{{ GlobalSiteSettings()->site_description }}</p>
 
-                    @if (GlobalSiteSettings()->site_facebook || GlobalSiteSettings()->site_twitter || GlobalSiteSettings()->site_linkedin || GlobalSiteSettings()->site_pinterest || GlobalSiteSettings()->site_youtube)
-                        <div class="footer-widget__social">
-                            <ul class="social-icon-list">
-                                @if (GlobalSiteSettings()->site_facebook)
-                                    <li class="social-icon-list__item">
-                                        <a href="{{ GlobalSiteSettings()->site_facebook }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-facebook-f"></i></a>
-                                    </li>
-                                @endif
-                                @if (GlobalSiteSettings()->site_twitter)
-                                    <li class="social-icon-list__item">
-                                        <a href="{{ GlobalSiteSettings()->site_twitter }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-twitter"></i></a>
-                                    </li>
-                                @endif
-                                @if (GlobalSiteSettings()->site_linkedin)
-                                    <li class="social-icon-list__item">
-                                        <a href="{{ GlobalSiteSettings()->site_linkedin }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-linkedin-in"></i></a>
-                                    </li>
-                                @endif
-                                @if (GlobalSiteSettings()->site_pinterest)
-                                    <li class="social-icon-list__item">
-                                        <a href="{{ GlobalSiteSettings()->site_pinterest }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-pinterest-p"></i></a>
-                                    </li>
-                                @endif
-                                @if (GlobalSiteSettings()->site_youtube)
-                                    <li class="social-icon-list__item">
-                                        <a href="{{ GlobalSiteSettings()->site_youtube }}" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-youtube"></i></a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                    @endif
+                    <div class="footer-widget__social">
+                        <ul class="social-icon-list">
+                            <li class="social-icon-list__item">
+                                <a href="#" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li class="social-icon-list__item">
+                                <a href="#" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-twitter"></i></a>
+                            </li>
+                            <li class="social-icon-list__item">
+                                <a href="#" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-linkedin-in"></i></a>
+                            </li>
+                            <li class="social-icon-list__item">
+                                <a href="#" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-pinterest-p"></i></a>
+                            </li>
+                            <li class="social-icon-list__item">
+                                <a href="#" target="_blank" class="social-icon-list__link flx-center"><i class="fab fa-youtube"></i></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -104,7 +92,6 @@
             <div class="footer-links">
                 <a href="{{ route('terms.conditions') }}" class="footer-link font-14">Terms of service</a>
                 <a href="{{ route('privacy.policy') }}" class="footer-link font-14">Privacy Policy</a>
-                <a href="{{ route('data.usage') }}" class="footer-link font-14">cookies</a>
             </div>
         </div>
     </div>
