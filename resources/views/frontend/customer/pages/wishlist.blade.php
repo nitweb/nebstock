@@ -38,12 +38,14 @@
                                                 @endif
                                             </td>
                                             <td data-label="Action">
-                                                @if($item->product)
-                                                    @include('frontend.partials.download_button', ['product' => $item->product])
-                                                @endif
-                                                <a href="{{ route('wishlist.remove', $item->id) }}" class="btn btn-outline-danger btn-sm ms-1" onclick="return confirm('Remove from wishlist?')">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    @if($item->product)
+                                                        @include('frontend.partials.download_button', ['product' => $item->product])
+                                                    @endif
+                                                    <a href="{{ route('wishlist.remove', $item->id) }}" class="btn btn-outline-danger btn-sm pill" onclick="return confirm('Remove from wishlist?')">
+                                                        <i class="fas fa-trash me-1"></i> Remove
+                                                    </a>
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty
@@ -53,11 +55,11 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            <div class="flx-between gap-2">
+                            <div class="flx-between gap-2 flex-wrap">
                                 <span class="paginate-content__text fs-14">
                                     Showing {{ $wishlist->firstItem() ?? 0 }} - {{ $wishlist->lastItem() ?? 0 }} of {{ $wishlist->total() }}
                                 </span>
-                                {{ $wishlist->links() }}
+                                @include('frontend.customer.pages.partials.pagination', ['paginator' => $wishlist])
                             </div>
                         </div>
                     </div>

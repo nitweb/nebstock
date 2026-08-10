@@ -48,11 +48,11 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            <div class="flx-between gap-2">
+                            <div class="flx-between gap-2 flex-wrap">
                                 <span class="paginate-content__text fs-14">
                                     Showing {{ $downloads->firstItem() ?? 0 }} - {{ $downloads->lastItem() ?? 0 }} of {{ $downloads->total() }}
                                 </span>
-                                {{ $downloads->links() }}
+                                @include('frontend.customer.pages.partials.pagination', ['paginator' => $downloads])
                             </div>
                         </div>
                     </div>
