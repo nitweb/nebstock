@@ -214,11 +214,37 @@
     ]
   });
   // ========================= popular Category Js End ===================
-  
+
   // ========================= Wishlist Js Start ===================
-  $('.product-item__wishlist').on('click', function() {
-    $(this).toggleClass('active')
-  }); 
+  $(document).on('click', '[data-wishlist-toggle]', function() {
+    const btn = $(this);
+    const isLoggedIn = btn.data('logged-in') == '1' || btn.data('logged-in') === 1;
+
+    if (!isLoggedIn) {
+      window.location.href = btn.data('login-url');
+      return;
+    }
+
+    if (btn.hasClass('processing')) return;
+    btn.addClass('processing');
+
+    $.ajax({
+      url: btn.data('toggle-url'),
+      type: 'POST',
+      data: {
+        _token: btn.data('csrf'),
+        product_id: btn.data('product-id'),
+      },
+      success: function(res) {
+        if (res.success) {
+          btn.toggleClass('active', res.added);
+        }
+      },
+      complete: function() {
+        btn.removeClass('processing');
+      }
+    });
+  });
   // ========================= Wishlist Js End ===================
   
   // ========================= Selling Product Js Start ==============

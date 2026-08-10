@@ -17,6 +17,7 @@ use App\Http\Controllers\BkashDemoController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GlobalController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // #################### Frontend Controller ####################
@@ -219,6 +220,11 @@ Route::middleware('customer')->group(function () {
 
     Route::post('/download/{slug}', [DownloadController::class, 'download'])->name('product.download');
     Route::get('/download/remaining/check', [DownloadController::class, 'remaining'])->name('product.download.remaining');
+
+    // ── Wishlist (logged-in customers only) ─────────────────────────────────
+    Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('customer.wishlist');
+    Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 });
 
 // ─── Checkout Routes — REMOVED (no cart, no checkout; direct one-click download after login) ───
@@ -233,8 +239,6 @@ Route::fallback(function () {
 
     return response()->view('frontend.errors.404', [], 404);
 });
-
-// Wishlist — REMOVED (no cart/wishlist flow, direct download instead)
 
 Route::post('/newsletter/subscribe', [FrontendController::class, 'subscribe'])->name('newsletter.subscribe');
 
