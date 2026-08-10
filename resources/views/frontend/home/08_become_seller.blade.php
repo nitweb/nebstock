@@ -26,7 +26,7 @@
                     <img src="{{ asset('frontend/assets/images/thumbs/newsletter-thumb.png') }}" alt="" class="newsletter-three-content__img">
                     <h3 class="mb-3">Support 24/7</h3>
                     <p class="mb-24 font-18">Wanna talk? Send us a message</p>
-                    <a href="mailto:azency@office.com" class="btn btn-outline-black btn-lg">azency@office.com</a>
+                    <a href="mailto:info@nebstock.com" class="btn btn-outline-black btn-lg" style="text-transform: lowercase;">info@nebstock.com</a>
                 </div>
             </div>
         </div>

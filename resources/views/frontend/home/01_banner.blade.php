@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const li = document.createElement('li');
                     li.innerHTML = `<a href="{{ route('shop') }}?q=${encodeURIComponent(product.name)}" class="auto-suggestion-list__item w-100 text-body d-flex align-items-center gap-2">
                         <img src="${product.coverImage}" alt="" width="32" height="32" style="object-fit:cover;border-radius:4px;">
-                        <span>${product.name}${product.authorNames ? ' <small class="text-muted">by ' + product.authorNames + '</small>' : ''}</span>
+                        <span>${product.name}</span>
                     </a>`;
                     list.appendChild(li);
                 });
