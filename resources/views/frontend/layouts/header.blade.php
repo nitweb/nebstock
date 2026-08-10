@@ -32,6 +32,10 @@
                         <a href="{{ route('index') }}" class="nav-menu__link">Home</a>
                     </li>
 
+                    <li class="nav-menu__item">
+                        <a href="javascript:void(0)" class="nav-menu__link">Font</a>
+                    </li>
+
                     @foreach($__headerCategories as $__cat)
                         @if($__cat->recursiveChildren->count())
                             <li class="nav-menu__item has-submenu">
@@ -50,10 +54,6 @@
                             </li>
                         @endif
                     @endforeach
-
-                    <li class="nav-menu__item">
-                        <a href="{{ route('shop') }}" class="nav-menu__link">Shop</a>
-                    </li>
 
                     <li class="nav-menu__item">
                         <a href="{{ route('contact') }}" class="nav-menu__link">Contact</a>

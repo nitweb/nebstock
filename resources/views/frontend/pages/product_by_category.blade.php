@@ -138,7 +138,7 @@
                     </div>
 
                     <div id="shopGridWrapper">
-                        @include('frontend.pages.partials.shop_grid', ['products' => $products])
+                        @include('frontend.pages.partials.shop_grid', ['products' => $products, 'wishlistedIds' => $wishlistedIds ?? []])
                     </div>
 
                     <div id="shopPaginationWrapper">
