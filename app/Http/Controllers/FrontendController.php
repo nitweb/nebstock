@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Mail\NewsletterWelcomeMail;
-use App\Models\Wishlist;
 use Illuminate\Support\Facades\Mail;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -65,9 +64,14 @@ class FrontendController extends Controller
         $total_subscribers  = Newsletter::count();
         $total_downloads    = Order::count();
 
+        // Wishlisted product ids for the logged-in customer (for heart icon state)
+        $wishlistedIds = Auth::guard('user')->check()
+            ? \App\Models\Wishlist::where('user_id', Auth::guard('user')->id())->pluck('product_id')->toArray()
+            : [];
+
         return view('frontend.index', compact(
             'slider_data', 'categories', 'featured_products', 'latest_products',
-            'total_products', 'total_subscribers', 'total_downloads'
+            'total_products', 'total_subscribers', 'total_downloads', 'wishlistedIds'
         ));
     }
 
@@ -136,9 +140,14 @@ class FrontendController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
+        // Wishlisted product ids for the logged-in customer (for heart icon state)
+        $wishlistedIds = Auth::guard('user')->check()
+            ? \App\Models\Wishlist::where('user_id', Auth::guard('user')->id())->pluck('product_id')->toArray()
+            : [];
+
         // AJAX: return only product grid + pagination HTML
         if ($request->ajax()) {
-            $grid = view('frontend.pages.partials.shop_grid', compact('products'))->render();
+            $grid = view('frontend.pages.partials.shop_grid', compact('products', 'wishlistedIds'))->render();
             $pagination = view('frontend.pages.partials.shop_pagination', compact('products'))->render();
             return response()->json([
                 'grid' => $grid,
@@ -149,14 +158,7 @@ class FrontendController extends Controller
             ]);
         }
 
-        $wishlistedIds = [];
-        if (Auth::guard('user')->check()) {
-            $wishlistedIds = Wishlist::where('user_id', Auth::guard('user')->id())
-                ->pluck('product_id')
-                ->toArray();
-        }
-
-        return view('frontend.pages.shop', compact('categories', 'products', 'top_sell_product', 'wishlistedIds', 'totalProductCount'));
+        return view('frontend.pages.shop', compact('categories', 'products', 'top_sell_product', 'totalProductCount', 'wishlistedIds'));
     }
 
     // ─────────────────────────────────────────────────────────────────────────

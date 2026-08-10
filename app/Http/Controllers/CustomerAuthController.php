@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
 use App\Models\Download;
 use App\Models\Product;
 use App\Models\SiteSettings;
@@ -15,7 +14,6 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerResetMail;
-use App\Http\Controllers\WishlistController;
 
 class CustomerAuthController extends Controller
 {
@@ -32,8 +30,6 @@ class CustomerAuthController extends Controller
             'password' => 'required',
         ]);
 
-        $oldSessionId = session()->getId();
-
         if (
             Auth::guard('user')->attempt([
                 'email' => $request->email,
@@ -43,27 +39,6 @@ class CustomerAuthController extends Controller
             ])
         ) {
             $user = Auth::guard('user')->user();
-            $newSessionId = session()->getId();
-
-            // ── Cart merge ────────────────────────────────────────────────────
-            $guestCartItems = Cart::where('session_id', $oldSessionId)->get();
-
-            foreach ($guestCartItems as $guestItem) {
-                $existingItem = Cart::where('user_id', $user->id)->where('product_id', $guestItem->product_id)->first();
-
-                if ($existingItem) {
-                    $existingItem->increment('quantity', $guestItem->quantity);
-                    $guestItem->delete();
-                } else {
-                    $guestItem->update([
-                        'user_id' => $user->id,
-                        'session_id' => $newSessionId,
-                    ]);
-                }
-            }
-
-            // ── Wishlist merge ────────────────────────────────────────────────
-            WishlistController::mergeGuestWishlist($user->id, $oldSessionId);
 
             $intended = session()->pull('url.intended', route('customer.dashboard'));
             return redirect($intended)->with('success', 'Welcome back, ' . $user->name . '!');
