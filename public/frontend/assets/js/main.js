@@ -228,6 +228,14 @@
     if (btn.hasClass('processing')) return;
     btn.addClass('processing');
 
+    const Toast = typeof Swal !== 'undefined' ? Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+    }) : null;
+
     $.ajax({
       url: btn.data('toggle-url'),
       type: 'POST',
@@ -238,6 +246,17 @@
       success: function(res) {
         if (res.success) {
           btn.toggleClass('active', res.added);
+          if (Toast) {
+            Toast.fire({
+              icon: 'success',
+              title: res.added ? 'Added to wishlist!' : 'Removed from wishlist.',
+            });
+          }
+        }
+      },
+      error: function() {
+        if (Toast) {
+          Toast.fire({ icon: 'error', title: 'Something went wrong. Please try again.' });
         }
       },
       complete: function() {

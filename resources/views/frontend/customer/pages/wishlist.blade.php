@@ -1,61 +1,69 @@
-<section class="featured-product padding-y-120 position-relative z-index-1">
+@extends('frontend.customer.dashboard')
+@section('customer_title', 'My Wishlist')
+@section('customer_contents')
 
-    <img src="{{ asset('frontend/assets/images/gradients/featured-gradient.png') }}" alt="" class="bg--gradient white-version">
-    <img src="{{ asset('frontend/assets/images/shapes/spider-net.png') }}" alt="" class="spider-net position-absolute top-0 end-0 z-index--1 white-version">
-    <img src="{{ asset('frontend/assets/images/shapes/spider-net-white.png') }}" alt="" class="spider-net position-absolute top-0 end-0 z-index--1 dark-version">
-
-    <img src="{{ asset('frontend/assets/images/shapes/element1.png') }}" alt="" class="element two">
-
-    <div class="container container-two">
-
-        <div class="row gy-4 flex-wrap-reverse align-items-center">
-
-            <div class="col-xl-6">
-
-                <div class="row gy-4 card-wrapper">
-
-                    @forelse($featured_products as $product)
-                        <div class="col-sm-6">
-                            <div class="product-item box-shadow">
-                                <div class="product-item__thumb d-flex">
-                                    <a href="javascript:void(0)" class="link w-100">
-                                        <img src="{{ $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('frontend/assets/images/thumbs/product-img9.png') }}" alt="{{ $product->name }}" class="cover-img">
-                                    </a>
-                                    @include('frontend.partials.wishlist_button', ['product' => $product])
-                                </div>
-                                <div class="product-item__content">
-                                    <h6 class="product-item__title mb-3">
-                                        <a href="javascript:void(0)" class="link">{{ $product->name }}</a>
-                                    </h6>
-                                    <div class="product-item__bottom">
-                                        @include('frontend.partials.download_button', ['product' => $product])
-                                    </div>
-                                </div>
+    <div class="dashboard-body__content">
+        @if(session('success'))
+            <div class="alert alert-success mb-3">{{ session('success') }}</div>
+        @endif
+        <div class="row gy-4">
+            <div class="col-12">
+                <div class="flx-between gap-2 mb-3">
+                    <h6 class="mb-0">My Wishlist</h6>
+                </div>
+                <div class="card common-card border border-gray-five">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-body mt--24">
+                                <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Image</th>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($wishlist as $item)
+                                        <tr>
+                                            <td data-label="SL">{{ $wishlist->firstItem() + $loop->index }}</td>
+                                            <td data-label="Image">
+                                                <img src="{{ $item->product && $item->product->cover_image ? asset('upload/product_covers/' . $item->product->cover_image) : asset('frontend/assets/images/thumbs/product-img1.png') }}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:6px;">
+                                            </td>
+                                            <td data-label="Product">{{ $item->product->name ?? 'Product removed' }}</td>
+                                            <td data-label="Category">
+                                                @if($item->product && $item->product->categories->count())
+                                                    {{ $item->product->categories->first()->name }}
+                                                @endif
+                                            </td>
+                                            <td data-label="Action">
+                                                @if($item->product)
+                                                    @include('frontend.partials.download_button', ['product' => $item->product])
+                                                @endif
+                                                <a href="{{ route('wishlist.remove', $item->id) }}" class="btn btn-outline-danger btn-sm ms-1" onclick="return confirm('Remove from wishlist?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4">Your wishlist is empty. Browse the <a href="{{ route('shop') }}">shop</a> and tap the heart icon to save products here.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                            <div class="flx-between gap-2">
+                                <span class="paginate-content__text fs-14">
+                                    Showing {{ $wishlist->firstItem() ?? 0 }} - {{ $wishlist->lastItem() ?? 0 }} of {{ $wishlist->total() }}
+                                </span>
+                                {{ $wishlist->links() }}
                             </div>
                         </div>
-                    @empty
-                        <p class="text-center w-100">No featured products yet.</p>
-                    @endforelse
-
-                </div>
-            </div>
-
-            <div class="col-xl-1 d-xl-block d-none"></div>
-
-            <div class="col-xl-5">
-                <div class="section-content">
-                    <div class="section-heading style-left">
-                        <h3 class="section-heading__title">Featured Products</h3>
-                        <p class="section-heading__desc font-18 w-sm">Every month we pick some best products for you. This month's best web themes & templates have arrived, chosen by our content specialists.</p>
                     </div>
-                    <a href="{{ route('shop') }}" class="btn btn-main btn-lg pill fw-300">
-                        View All Items
-                    </a>
                 </div>
             </div>
-
         </div>
-
     </div>
 
-</section>
+@endsection
