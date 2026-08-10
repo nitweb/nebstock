@@ -46,10 +46,10 @@ class ProductController extends Controller
     public function ProductStore(Request $request)
     {
         $rules = [
-            'name'           => 'required|string|max:255',
+            'name'           => 'required|string',
             'status'         => 'required|in:active,inactive',
-            'cover_image'    => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'file'           => 'required|file|max:102400',
+            'cover_image'    => 'required|image|mimes:jpeg,png,jpg,gif,webp',
+            'file'           => 'required|file',
             'category_ids'   => 'required|array|min:1',
             'category_ids.*' => 'exists:categories,id',
         ];
@@ -122,10 +122,10 @@ class ProductController extends Controller
     {
         $rules = [
             'id'             => 'required|exists:products,id',
-            'name'           => 'required|string|max:255',
+            'name'           => 'required|string',
             'status'         => 'required|in:active,inactive',
-            'cover_image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'file'           => 'nullable|file|max:102400',
+            'cover_image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
+            'file'           => 'nullable|file',
             'category_ids'   => 'required|array|min:1',
             'category_ids.*' => 'exists:categories,id',
         ];
