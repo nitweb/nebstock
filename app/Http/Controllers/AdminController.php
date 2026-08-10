@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Mail\WebsiteMail;
-use App\Models\Blog;
-use App\Models\BulkOrder;
 use App\Models\ContactForm;
 use App\Models\Order;
 use App\Models\Product;
@@ -27,11 +25,10 @@ class AdminController extends Controller
     public function AdminDashboard()
     {
         $productCount = Product::count();
-        $blogCount = Blog::count();
         $contactCount = ContactForm::count();
         $orderCount = Order::count();
 
-        return view('admin.index', compact('productCount', 'blogCount', 'contactCount', 'orderCount'));
+        return view('admin.index', compact('productCount', 'contactCount', 'orderCount'));
     }
 
     public function AdminLoginSubmit(Request $request)

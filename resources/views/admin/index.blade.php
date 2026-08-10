@@ -578,18 +578,6 @@
                         <div class="nm-stat-trend">All time orders placed</div>
                     </a>
 
-                    <a href="{{ route('backend.blog.list') }}" class="nm-stat-card c-blogs">
-                        <div class="nm-stat-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                            </svg>
-                        </div>
-                        <div class="nm-stat-label">Blog Posts</div>
-                        <div class="nm-stat-value">{{ $blogCount ?? 0 }}</div>
-                        <div class="nm-stat-trend">Published articles</div>
-                    </a>
-
                     <a href="{{ route('backend.contact_form.list') }}" class="nm-stat-card c-contacts">
                         <div class="nm-stat-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -707,28 +695,6 @@
                                         <i class="bx bxs-group" style="font-size:15px;"></i>
                                     </div>
                                     <span class="nm-quick-link-text">View Customers</span>
-                                    <span class="nm-quick-link-arrow">›</span>
-                                </a>
-
-                                <a href="{{ route('backend.coupon.add') }}" class="nm-quick-link">
-                                    <div class="nm-quick-link-icon" style="background:#F5ECD0; color:#854F0B;">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                                            <line x1="7" y1="7" x2="7.01" y2="7" />
-                                        </svg>
-                                    </div>
-                                    <span class="nm-quick-link-text">Create Coupon</span>
-                                    <span class="nm-quick-link-arrow">›</span>
-                                </a>
-
-                                <a href="{{ route('backend.blog.add') }}" class="nm-quick-link">
-                                    <div class="nm-quick-link-icon" style="background:#FAEEDA; color:#854F0B;">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                        </svg>
-                                    </div>
-                                    <span class="nm-quick-link-text">Write Blog Post</span>
                                     <span class="nm-quick-link-arrow">›</span>
                                 </a>
 
