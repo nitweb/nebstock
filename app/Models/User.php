@@ -38,4 +38,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function downloads(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Download::class);
+    }
 }

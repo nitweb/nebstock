@@ -565,19 +565,6 @@
                         <div class="nm-stat-trend">Active listings in store</div>
                     </a>
 
-                    <a href="{{ route('backend.orders.list') }}" class="nm-stat-card c-orders">
-                        <div class="nm-stat-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                                <line x1="3" y1="6" x2="21" y2="6" />
-                                <path d="M16 10a4 4 0 0 1-8 0" />
-                            </svg>
-                        </div>
-                        <div class="nm-stat-label">Total Orders</div>
-                        <div class="nm-stat-value">{{ $orderCount ?? 0 }}</div>
-                        <div class="nm-stat-trend">All time orders placed</div>
-                    </a>
-
                     <a href="{{ route('backend.contact_form.list') }}" class="nm-stat-card c-contacts">
                         <div class="nm-stat-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -595,25 +582,8 @@
                 {{-- ── Bottom Grid ──────────────────────────── --}}
                 <div class="nm-bottom-grid">
 
-                    {{-- Left: Chart + Activity --}}
+                    {{-- Left: Activity --}}
                     <div>
-                        {{-- Sales Chart --}}
-                        <div class="nm-chart-wrap">
-                            <div class="nm-chart-header">
-                                <div>
-                                    <p class="nm-chart-title">Monthly Orders</p>
-                                    <p class="nm-chart-subtitle">Order volume over the last 6 months</p>
-                                </div>
-                                <div class="nm-chart-tabs">
-                                    <button class="nm-tab active">6M</button>
-                                    <button class="nm-tab">1Y</button>
-                                </div>
-                            </div>
-                            <div style="position: relative; width: 100%; height: 220px;">
-                                <canvas id="nmOrderChart" role="img" aria-label="Monthly orders bar chart">Monthly orders chart</canvas>
-                            </div>
-                        </div>
-
                         {{-- Recent Activity --}}
                         <div class="nm-panel">
                             <div class="nm-panel-header">
@@ -621,13 +591,6 @@
                                 <span class="nm-panel-badge">Live</span>
                             </div>
                             <div class="nm-activity-list">
-                                <div class="nm-activity-item">
-                                    <div class="nm-activity-dot" style="background:#1D9E75"></div>
-                                    <div class="nm-activity-body">
-                                        <p class="nm-activity-text">New order <strong>#ORD-{{ rand(1000, 9999) }}</strong> has been placed</p>
-                                        <span class="nm-activity-time">Just now</span>
-                                    </div>
-                                </div>
                                 <div class="nm-activity-item">
                                     <div class="nm-activity-dot" style="background:#378ADD"></div>
                                     <div class="nm-activity-body">
@@ -676,17 +639,6 @@
                                         </svg>
                                     </div>
                                     <span class="nm-quick-link-text">Add New Product</span>
-                                    <span class="nm-quick-link-arrow">›</span>
-                                </a>
-
-                                <a href="{{ route('backend.orders.list') }}" class="nm-quick-link">
-                                    <div class="nm-quick-link-icon" style="background:#E1F5EE; color:#0F6E56;">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M9 11l3 3L22 4" />
-                                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                                        </svg>
-                                    </div>
-                                    <span class="nm-quick-link-text">View Orders</span>
                                     <span class="nm-quick-link-arrow">›</span>
                                 </a>
 
@@ -754,92 +706,4 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-    <script>
-        (function() {
-            var ctx = document.getElementById('nmOrderChart');
-            if (!ctx) return;
-
-            var labels = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
-            var data6m = [14, 22, 18, 27, 21, {{ $orderCount ?? 0 }}];
-
-            var chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Orders',
-                        data: data6m,
-                        backgroundColor: 'rgba(184,134,11,0.15)',
-                        borderColor: '#B8860B',
-                        borderWidth: 2,
-                        borderRadius: 6,
-                        borderSkipped: false,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: '#1A1A1A',
-                            titleColor: '#fff',
-                            bodyColor: 'rgba(255,255,255,0.7)',
-                            padding: 10,
-                            cornerRadius: 8,
-                            callbacks: {
-                                label: function(ctx) {
-                                    return ' ' + ctx.parsed.y + ' orders';
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#999',
-                                font: {
-                                    size: 12
-                                }
-                            },
-                            border: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: 'rgba(0,0,0,0.04)'
-                            },
-                            ticks: {
-                                color: '#bbb',
-                                font: {
-                                    size: 11
-                                },
-                                maxTicksLimit: 5
-                            },
-                            border: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Tab switching
-            document.querySelectorAll('.nm-tab').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.nm-tab').forEach(function(b) {
-                        b.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-        })();
-    </script>
 @endsection

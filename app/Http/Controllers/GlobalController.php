@@ -26,7 +26,6 @@ class GlobalController extends Controller
 
             // 2. Security: Whitelist of allowed models to prevent abuse
             $allowedModels = [
-                \App\Models\Slider::class,
                 \App\Models\Product::class,
             ];
 

@@ -8,7 +8,6 @@ use App\Models\MissionVision;
 use App\Models\Newsletter;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -25,8 +24,6 @@ class FrontendController extends Controller
     // ─────────────────────────────────────────────────────────────────────────
     public function Index()
     {
-        $slider_data = Slider::where('slider_status', 'active')->orderBy('id', 'asc')->get();
-
         // Root categories with their active products (for dynamic home sections)
         $categories = Category::active()
             ->root()
@@ -70,7 +67,7 @@ class FrontendController extends Controller
             : [];
 
         return view('frontend.index', compact(
-            'slider_data', 'categories', 'featured_products', 'latest_products',
+            'categories', 'featured_products', 'latest_products',
             'total_products', 'total_subscribers', 'total_downloads', 'wishlistedIds'
         ));
     }

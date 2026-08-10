@@ -40,8 +40,9 @@ class CustomerAuthController extends Controller
         ) {
             $user = Auth::guard('user')->user();
 
-            $intended = session()->pull('url.intended', route('customer.dashboard'));
-            return redirect($intended)->with('success', 'Welcome back, ' . $user->name . '!');
+            // Always land on the customer dashboard after login (not a stale/wrong intended URL).
+            session()->forget('url.intended');
+            return redirect()->route('index')->with('success', 'Welcome back, ' . $user->name . '!');
         }
 
         return back()->with('error', 'Invalid credentials')->withInput();
