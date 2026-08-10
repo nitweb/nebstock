@@ -307,23 +307,4 @@ class CustomerAuthController extends Controller
 
         return $status === Password::PASSWORD_RESET ? redirect()->route('customer.login')->with('success', 'Password reset.') : back()->withErrors(['email' => __($status)]);
     }
-
-    public function myBlogs()
-    {
-        $customer = Auth::guard('user')->user();
-
-        $blogs = \App\Models\Blog::where('submitted_by', $customer->id)->with('blogCategory')->latest()->get()->map(
-            fn($b) => [
-                'id' => $b->id,
-                'title' => $b->blog_title,
-                'category' => $b->blogCategory->blog_category_name ?? 'Uncategorized',
-                'status' => $b->blog_status,
-                'submitted_at' => $b->submitted_at?->format('d M Y') ?? $b->created_at->format('d M Y'),
-                'rejection_reason' => $b->rejection_reason,
-                'url' => $b->blog_status === 'active' ? route('blog.details', $b->blog_slug) : null,
-            ],
-        );
-
-        return response()->json(['success' => true, 'blogs' => $blogs]);
-    }
 }

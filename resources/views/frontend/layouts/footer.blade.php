@@ -58,7 +58,6 @@
                         <li class="footer-lists__item"><a href="{{ route('customer.dashboard') }}" class="footer-lists__link">Dashboard</a></li>
                         <li class="footer-lists__item"><a href="{{ route('customer.login') }}" class="footer-lists__link">Login</a></li>
                         <li class="footer-lists__item"><a href="{{ route('customer.register') }}" class="footer-lists__link">Register</a></li>
-                        <li class="footer-lists__item"><a href="{{ route('blog') }}" class="footer-lists__link">Blog</a></li>
                     </ul>
                 </div>
             </div>

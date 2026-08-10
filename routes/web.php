@@ -3,27 +3,20 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\Backend\AboutCompanyController;
-use App\Http\Controllers\Backend\BlogCategoriesController;
-use App\Http\Controllers\Backend\BlogController;
-use App\Http\Controllers\Backend\BulkOrderController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ContactFormController;
-use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\MissionVisionController;
 use App\Http\Controllers\Backend\NewsletterController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
-use App\Http\Controllers\Backend\ProductReviewController;
 use App\Http\Controllers\Backend\SiteSettingsController;
 use App\Http\Controllers\Backend\SliderController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\BkashDemoController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GlobalController;
-use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // #################### Frontend Controller ####################
@@ -36,56 +29,18 @@ Route::middleware('web')->group(function () {
 
     // Cart — REMOVED (no cart flow, direct download instead)
 
-    // Product Details
-    Route::get('/product/{slug}', [FrontendController::class, 'ProductDetails'])->name('product.details');
-
-    // Product Review
-    Route::post('/product/review', [ProductReviewController::class, 'storeReview'])->name('product.review.store');
-
-    // Bulk Order Submit
-    Route::post('/bulk-order-submit', [FrontendController::class, 'bulkOrderSubmit'])->name('bulk.order.submit');
-
     // Product By Category
     Route::get('/category/{slug}', [FrontendController::class, 'ProductByCategory'])->name('product.by.category');
-
-    // Product By Sub-Category
-    Route::get('/sub-category/{slug}', [FrontendController::class, 'ProductBySubCategory'])->name('product.by.subcategory');
-
-    // Product By Age
-    Route::get('/age/{slug}', [FrontendController::class, 'ProductByAge'])->name('product.by.age');
 
     // Contact Us
     Route::get('/contact', [FrontendController::class, 'Contact'])->name('contact');
     Route::post('/contact/submit', [ContactFormController::class, 'ContactSubmit'])->name('contact.submit');
-
-    // Blog
-    Route::get('/blog', [FrontendController::class, 'Blog'])->name('blog');
-    Route::get('/blog/search', [FrontendController::class, 'BlogSearch'])->name('blog.search');
-
-    // ✅ Submit routes — wildcard এর আগে (middleware আলাদাভাবে apply)
-    Route::get('/blog/submit', [FrontendController::class, 'BlogSubmitForm'])
-        ->name('blog.submit')
-        ->middleware('customer');
-    Route::post('/blog/submit', [FrontendController::class, 'BlogSubmitStore'])
-        ->name('blog.submit.store')
-        ->middleware('customer');
-
-    // Wildcard সবার শেষে
-    Route::get('/blog/{slug}', [FrontendController::class, 'BlogDetails'])->name('blog.details');
 
     // About Us
     Route::get('/about-us', [FrontendController::class, 'AboutUs'])->name('about');
 
     // Search
     Route::get('/ajax-search', [FrontendController::class, 'ajaxSearch'])->name('ajax.search');
-
-    // Child Development
-    Route::get('/child-development', [FrontendController::class, 'ChildDevelopment'])->name('child.development');
-
-    // Wholesale
-    Route::get('/wholesale', [FrontendController::class, 'WholesaleProducts'])->name('wholesale');
-
-    Route::get('/product/quick-view/{id}', [FrontendController::class, 'quickView'])->name('product.quick-view');
 
     // ── Cart — REMOVED (no cart/checkout flow, direct one-click download instead) ──
 
@@ -97,9 +52,6 @@ Route::middleware('web')->group(function () {
     Route::get('/return-policy', [FrontendController::class, 'ReturnPolicy'])->name('return.policy');
     Route::get('/terms-conditions', [FrontendController::class, 'TermsConditions'])->name('terms.conditions');
     Route::get('/privacy-policy', [FrontendController::class, 'PrivacyPolicy'])->name('privacy.policy');
-
-    // ── Public: Submit Review (outside admin middleware) ──────────────────────────
-    // Route::post('/product/review', [ProductReviewController::class, 'storeReview'])->name('product.review.store');
 
     // Checkout tax-rate — REMOVED (no checkout flow)
 });
@@ -150,18 +102,6 @@ Route::middleware('admin')->group(function () {
             Route::get('/edit/{id}', [ProductController::class, 'ProductEdit'])->name('edit');
             Route::post('/update', [ProductController::class, 'ProductUpdate'])->name('update');
             Route::get('/delete/{id}', [ProductController::class, 'ProductDelete'])->name('delete');
-            Route::post('/gallery/update/{id}', [ProductController::class, 'GalleryImageUpdate'])->name('gallery.update');
-            Route::delete('/gallery/delete/{id}', [ProductController::class, 'GalleryImageDelete'])->name('gallery.delete');
-        });
-
-    // ── Product Reviews ───────────────────────────────────────────────────────────
-    Route::prefix('backend/product-reviews')
-        ->name('backend.reviews.')
-        ->group(function () {
-            Route::get('/list', [ProductReviewController::class, 'ProductReviewList'])->name('list');
-            Route::post('/update-status', [ProductReviewController::class, 'updateStatus'])->name('update_status');
-            Route::get('/delete/{id}', [ProductReviewController::class, 'ProductReviewDelete'])->name('delete');
-            Route::post('/bulk-delete', [ProductReviewController::class, 'ProductReviewBulkDelete'])->name('bulk_delete');
         });
 
     // About Our Company
@@ -174,41 +114,10 @@ Route::middleware('admin')->group(function () {
     Route::get('/backend/mission-vision-values/edit/{id}', [MissionVisionController::class, 'MissionVisionEdit'])->name('backend.mission_vision.edit');
     Route::post('/backend/mission-vision-values/update', [MissionVisionController::class, 'MissionVisionUpdate'])->name('backend.mission_vision.update');
 
-    // Blog Categories
-    Route::get('/backend/blog-categories/list', [BlogCategoriesController::class, 'BlogCategoriesList'])->name('backend.blog_categories.list');
-    Route::get('/backend/blog-categories/add', [BlogCategoriesController::class, 'BlogCategoriesAdd'])->name('backend.blog_categories.add');
-    Route::post('/backend/blog-categories/store', [BlogCategoriesController::class, 'BlogCategoriesStore'])->name('backend.blog_categories.store');
-    Route::get('/backend/blog-categories/edit/{id}', [BlogCategoriesController::class, 'BlogCategoriesEdit'])->name('backend.blog_categories.edit');
-    Route::post('/backend/blog-categories/update', [BlogCategoriesController::class, 'BlogCategoriesUpdate'])->name('backend.blog_categories.update');
-    Route::get('/backend/blog-categories/delete/{id}', [BlogCategoriesController::class, 'BlogCategoriesDelete'])->name('backend.blog_categories.delete');
-    // Blog Categories (AJAX)
-    Route::post('/backend/blog-categories/ajax-store', [BlogCategoriesController::class, 'BlogCategoriesAjaxStore'])->name('backend.blog_categories.ajax_store');
-
-    // Blog
-    Route::get('/backend/blog/list', [BlogController::class, 'BlogList'])->name('backend.blog.list');
-    Route::get('/backend/blog/add', [BlogController::class, 'BlogAdd'])->name('backend.blog.add');
-    Route::post('/backend/blog/store', [BlogController::class, 'BlogStore'])->name('backend.blog.store');
-    Route::get('/backend/blog/edit/{id}', [BlogController::class, 'BlogEdit'])->name('backend.blog.edit');
-    Route::post('/backend/blog/update', [BlogController::class, 'BlogUpdate'])->name('backend.blog.update');
-    Route::get('/backend/blog/delete/{id}', [BlogController::class, 'BlogDelete'])->name('backend.blog.delete');
-    Route::get('/backend/blog/{id}/content', [BlogController::class, 'BlogContent'])->name('backend.blog.content');
-    // Blog approve / reject (AJAX)
-    Route::post('/backend/blog/{id}/approve', [BlogController::class, 'BlogApprove'])->name('backend.blog.approve');
-    Route::post('/backend/blog/{id}/reject', [BlogController::class, 'BlogReject'])->name('backend.blog.reject');
-
     // Contact Form
     Route::get('/backend/contact-form/list', [ContactFormController::class, 'ContactFormList'])->name('backend.contact_form.list');
     Route::get('/backend/contact-form/delete/{id}', [ContactFormController::class, 'ContactFormDelete'])->name('backend.contact_form.delete');
     Route::post('/backend/contact-form/bulk-delete', [ContactFormController::class, 'ContactFormBulkDelete'])->name('backend.contact_form.bulk_delete');
-
-    // Coupon
-    Route::get('/backend/coupon/list', [CouponController::class, 'CouponList'])->name('backend.coupon.list');
-    Route::get('/backend/coupon/add', [CouponController::class, 'CouponAdd'])->name('backend.coupon.add');
-    Route::post('/backend/coupon/store', [CouponController::class, 'CouponStore'])->name('backend.coupon.store');
-    Route::get('/backend/coupon/edit/{id}', [CouponController::class, 'CouponEdit'])->name('backend.coupon.edit');
-    Route::post('/backend/coupon/update', [CouponController::class, 'CouponUpdate'])->name('backend.coupon.update');
-    Route::get('/backend/coupon/delete/{id}', [CouponController::class, 'CouponDelete'])->name('backend.coupon.delete');
-    Route::get('/backend/coupon/generate-code', [CouponController::class, 'generateCode'])->name('backend.coupon.generate');
 
     Route::prefix('backend/orders')
         ->name('backend.orders.')
@@ -307,16 +216,6 @@ Route::middleware('customer')->group(function () {
     Route::post('/change/password', [CustomerAuthController::class, 'changePassword'])->name('customer.password.change');
     Route::get('/my-orders', [CheckoutController::class, 'myOrders'])->name('customer.orders');
     Route::get('/order/{id}/invoice', [CheckoutController::class, 'downloadInvoice'])->name('customer.order.invoice');
-
-    // ✅ এই line টা যোগ করুন
-    Route::get('/my-blogs', [CustomerAuthController::class, 'myBlogs'])->name('customer.blogs');
-
-    Route::get('/blog/edit/{id}', [FrontendController::class, 'BlogEditForm'])
-        ->name('blog.edit')
-        ->middleware('customer');
-    Route::post('/blog/edit/{id}', [FrontendController::class, 'BlogEditStore'])
-        ->name('blog.edit.store')
-        ->middleware('customer');
 
     Route::post('/download/{slug}', [DownloadController::class, 'download'])->name('product.download');
     Route::get('/download/remaining/check', [DownloadController::class, 'remaining'])->name('product.download.remaining');

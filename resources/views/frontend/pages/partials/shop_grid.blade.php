@@ -13,13 +13,6 @@
                         <a href="javascript:void(0)" class="link">{{ $product->name }}</a>
                     </h6>
                     <div class="product-item__info flx-between gap-2">
-                        @if($product->authors->count())
-                            <span class="product-item__author">
-                                by <a href="{{ route('product.by.author', $product->authors->first()->slug) }}" class="link hover-text-decoration-underline"> {{ $product->authors->first()->name }}</a>
-                            </span>
-                        @else
-                            <span></span>
-                        @endif
                         @if($product->categories->count())
                             <a href="{{ route('product.by.category', $product->categories->first()->slug) }}" class="badge bg-light text-dark font-12">{{ $product->categories->first()->name }}</a>
                         @endif
