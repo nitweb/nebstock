@@ -36,17 +36,6 @@
                     </ul>
                 </li>
 
-                {{-- Product Reviews --}}
-                {{-- <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i data-feather="star"></i>
-                        <span>Product Reviews</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('backend.reviews.list') }}">Review List</a></li>
-                    </ul>
-                </li> --}}
-
                 {{-- Orders --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -58,18 +47,6 @@
                     </ul>
                 </li>
 
-                {{-- Coupon --}}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i data-feather="tag"></i>
-                        <span>Coupon</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('backend.coupon.list') }}">Coupon List</a></li>
-                        <li><a href="{{ route('backend.coupon.add') }}">Add Coupon</a></li>
-                    </ul>
-                </li>
-
                 {{-- Newsletter --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -78,18 +55,6 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('backend.newsletter.list') }}">Subscribers List</a></li>
-                    </ul>
-                </li>
-
-                {{-- Blog --}}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i data-feather="edit-3"></i>
-                        <span>Blog</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('backend.blog_categories.list') }}">Blog Categories</a></li>
-                        <li><a href="{{ route('backend.blog.list') }}">Blog List</a></li>
                     </ul>
                 </li>
 
