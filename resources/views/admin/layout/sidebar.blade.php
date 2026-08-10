@@ -13,17 +13,6 @@
                     </a>
                 </li>
 
-                {{-- Slider --}}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i data-feather="image"></i>
-                        <span>Slider</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('backend.slider.list') }}">List</a></li>
-                    </ul>
-                </li>
-
                 {{-- Product Manage --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -33,17 +22,6 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('backend.categories.list') }}">Category List</a></li>
                         <li><a href="{{ route('backend.products.list') }}">Product List</a></li>
-                    </ul>
-                </li>
-
-                {{-- Orders --}}
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i data-feather="shopping-bag"></i>
-                        <span>Order Manage</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('backend.orders.list') }}">Order List</a></li>
                     </ul>
                 </li>
 

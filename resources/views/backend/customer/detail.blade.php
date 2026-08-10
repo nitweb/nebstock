@@ -53,6 +53,37 @@
                                     <th class="text-muted">Joined</th>
                                     <td>{{ $customer->created_at->format('d M Y') }}</td>
                                 </tr>
+                                <tr>
+                                    <th class="text-muted">Payment Status</th>
+                                    <td>
+                                        @php
+                                            $paymentBadge = match($customer->payment_status) {
+                                                'approved' => 'bg-success',
+                                                'rejected' => 'bg-danger',
+                                                default => 'bg-warning text-dark',
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $paymentBadge }}">{{ ucfirst($customer->payment_status ?? 'pending') }}</span>
+                                    </td>
+                                </tr>
+                                @if ($customer->bkash_number)
+                                    <tr>
+                                        <th class="text-muted">bKash Number</th>
+                                        <td>{{ $customer->bkash_number }}</td>
+                                    </tr>
+                                @endif
+                                @if ($customer->bkash_transaction_id)
+                                    <tr>
+                                        <th class="text-muted">Transaction ID</th>
+                                        <td>{{ $customer->bkash_transaction_id }}</td>
+                                    </tr>
+                                @endif
+                                @if ($customer->payment_amount)
+                                    <tr>
+                                        <th class="text-muted">Amount Paid</th>
+                                        <td>{{ number_format($customer->payment_amount, 2) }}</td>
+                                    </tr>
+                                @endif
                             </table>
 
                             <hr>
@@ -74,11 +105,11 @@
                             <div class="card mini-stats-wid">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <div class="avatar-sm rounded bg-primary bg-soft d-flex align-items-center justify-content-center" style="min-width:48px;height:48px;">
-                                        <i class="fas fa-shopping-cart font-size-24 text-white"></i>
+                                        <i class="bx bx-download font-size-24 text-white"></i>
                                     </div>
                                     <div>
-                                        <p class="text-muted mb-1 font-size-13">Total Orders</p>
-                                        <h5 class="mb-0">{{ $totalOrders }}</h5>
+                                        <p class="text-muted mb-1 font-size-13">Total Downloads</p>
+                                        <h5 class="mb-0">{{ $totalDownloads }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -86,25 +117,12 @@
                         <div class="col-12">
                             <div class="card mini-stats-wid">
                                 <div class="card-body d-flex align-items-center gap-3">
-                                    <div class="avatar-sm rounded bg-success bg-soft d-flex align-items-center justify-content-center" style="min-width:48px;height:48px;">
-                                        <i class="bx bx-dollar font-size-24 text-white"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-muted mb-1 font-size-13">Total Spent (Paid)</p>
-                                        <h5 class="mb-0">${{ number_format($totalSpent, 2) }}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <div class="avatar-sm rounded bg-warning bg-soft d-flex align-items-center justify-content-center" style="min-width:48px;height:48px;">
+                                    <div class="avatar-sm rounded bg-info bg-soft d-flex align-items-center justify-content-center" style="min-width:48px;height:48px;">
                                         <i class="bx bx-time font-size-24 text-white"></i>
                                     </div>
                                     <div>
-                                        <p class="text-muted mb-1 font-size-13">Pending Orders</p>
-                                        <h5 class="mb-0">{{ $pendingOrders }}</h5>
+                                        <p class="text-muted mb-1 font-size-13">Downloads Today</p>
+                                        <h5 class="mb-0">{{ $todayDownloads }} / {{ \App\Http\Controllers\DownloadController::DAILY_LIMIT }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -112,119 +130,77 @@
                     </div>
                 </div>
 
-                {{-- Right: Order History --}}
+                {{-- Right: Download History --}}
                 <div class="col-xl-8">
                     <div class="card">
                         <div class="card-header bg-white border-bottom">
                             <h5 class="mb-0 font-size-15">
-                                <i class="bx bx-list-check me-2 text-primary"></i>
-                                Order History
-                                <span class="badge bg-primary ms-2">{{ $totalOrders }}</span>
+                                <i class="bx bx-download me-2 text-primary"></i>
+                                Download History
+                                <span class="badge bg-primary ms-2">{{ $totalDownloads }}</span>
                             </h5>
                         </div>
                         <div class="card-body p-0">
-                            @if ($orders->isEmpty())
+                            @if ($downloads->isEmpty())
                                 <div class="text-center py-5 text-muted">
                                     <i class="bx bx-package font-size-40 d-block mb-2"></i>
-                                    No orders found for this customer.
+                                    No downloads found for this customer.
                                 </div>
                             @else
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle mb-0">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>Order #</th>
-                                                <th>Items</th>
-                                                <th>Total</th>
-                                                <th>Payment</th>
-                                                <th>Status</th>
+                                                <th>Product</th>
                                                 <th>Date</th>
-                                                <th>Action</th>
+                                                <th>Time</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($orders as $order)
+                                            @foreach ($downloads as $download)
                                                 <tr>
-                                                    <td><strong>#{{ $order->order_number }}</strong></td>
                                                     <td>
-                                                        <span class="badge bg-light text-dark border">
-                                                            {{ $order->items->count() }}
-                                                            {{ Str::plural('item', $order->items->count()) }}
-                                                        </span>
-                                                        {{-- @if ($order->items->isNotEmpty())
-                                                            <div class="text-muted small mt-1" style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                                                {{ $order->items->pluck('name')->join(', ') }}
-                                                            </div>
-                                                        @endif --}}
-                                                    </td>
-                                                    <td>
-                                                        <strong>${{ number_format($order->total, 2) }}</strong>
-                                                        {{-- @if ($order->discount > 0)
-                                                            <div class="text-muted small">
-                                                                -${{ number_format($order->discount, 2) }} off
-                                                            </div>
-                                                        @endif --}}
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-{{ $order->payment_status_color ?? 'secondary' }}">
-                                                            {{ ucfirst($order->payment_status ?? 'pending') }}
-                                                        </span>
-                                                        <div class="text-muted small">
-                                                            {{ strtoupper($order->payment_method ?? '') }}
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            @if ($download->product && $download->product->cover_image)
+                                                                <img src="{{ asset('upload/product_covers/' . $download->product->cover_image) }}" alt="" style="width:36px;height:36px;object-fit:cover;border-radius:4px;">
+                                                            @endif
+                                                            <strong>{{ $download->product->name ?? 'Product removed' }}</strong>
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <span class="badge bg-{{ $order->status_color }}">
-                                                            {{ $order->status_label }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-nowrap">
-                                                        {{ $order->created_at->format('d M Y') }}
-                                                        <div class="text-muted small">
-                                                            {{ $order->created_at->format('h:i A') }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('backend.orders.detail', $order->id) }}" class="btn btn-sm btn-outline-info waves-effect" title="View Order">
-                                                            <i class="bx bx-show align-middle"></i>
-                                                        </a>
-                                                    </td>
+                                                    <td>{{ $download->download_date->format('d M Y') }}</td>
+                                                    <td class="text-muted">{{ $download->created_at->format('h:i A') }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
 
-                                {{-- ── Pagination: theme rounded style, no giant SVG arrows ──────── --}}
-                                @if ($orders->hasPages())
+                                @if ($downloads->hasPages())
                                     <div class="p-3">
                                         <ul class="pagination pagination-rounded justify-content-center mb-1">
 
-                                            {{-- Prev --}}
-                                            <li class="page-item {{ $orders->onFirstPage() ? 'disabled' : '' }}">
-                                                <a class="page-link" href="{{ $orders->previousPageUrl() ?? '#' }}">
+                                            <li class="page-item {{ $downloads->onFirstPage() ? 'disabled' : '' }}">
+                                                <a class="page-link" href="{{ $downloads->previousPageUrl() ?? '#' }}">
                                                     <i class="mdi mdi-chevron-left"></i>
                                                 </a>
                                             </li>
 
-                                            {{-- Page numbers --}}
-                                            @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
-                                                <li class="page-item {{ $orders->currentPage() === $page ? 'active' : '' }}">
+                                            @foreach ($downloads->getUrlRange(1, $downloads->lastPage()) as $page => $url)
+                                                <li class="page-item {{ $downloads->currentPage() === $page ? 'active' : '' }}">
                                                     <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                                 </li>
                                             @endforeach
 
-                                            {{-- Next --}}
-                                            <li class="page-item {{ !$orders->hasMorePages() ? 'disabled' : '' }}">
-                                                <a class="page-link" href="{{ $orders->nextPageUrl() ?? '#' }}">
+                                            <li class="page-item {{ !$downloads->hasMorePages() ? 'disabled' : '' }}">
+                                                <a class="page-link" href="{{ $downloads->nextPageUrl() ?? '#' }}">
                                                     <i class="mdi mdi-chevron-right"></i>
                                                 </a>
                                             </li>
 
                                         </ul>
                                         <p class="text-center text-muted small mb-0">
-                                            Showing {{ $orders->firstItem() }}–{{ $orders->lastItem() }}
-                                            of {{ $orders->total() }} results
+                                            Showing {{ $downloads->firstItem() }}–{{ $downloads->lastItem() }}
+                                            of {{ $downloads->total() }} results
                                         </p>
                                     </div>
                                 @endif

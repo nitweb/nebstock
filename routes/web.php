@@ -8,10 +8,8 @@ use App\Http\Controllers\Backend\ContactFormController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\MissionVisionController;
 use App\Http\Controllers\Backend\NewsletterController;
-use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SiteSettingsController;
-use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\BkashDemoController;
 use App\Http\Controllers\CustomerAuthController;
@@ -72,14 +70,6 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/change/password', [AdminController::class, 'AdminChangePassword'])->name('admin.change.password');
     Route::post('/admin/password/update', [AdminController::class, 'AdminPasswordUpdate'])->name('admin.password.update');
 
-    // Slider Controller
-    Route::get('/backend/slider/list', [SliderController::class, 'SliderList'])->name('backend.slider.list');
-    Route::get('/backend/slider/add', [SliderController::class, 'SliderAdd'])->name('backend.slider.add');
-    Route::post('/backend/slider/store', [SliderController::class, 'SliderStore'])->name('backend.slider.store');
-    Route::get('/backend/slider/edit/{id}', [SliderController::class, 'SliderEdit'])->name('backend.slider.edit');
-    Route::post('/backend/slider/update', [SliderController::class, 'SliderUpdate'])->name('backend.slider.update');
-    Route::get('/backend/slider/delete/{id}', [SliderController::class, 'SliderDelete'])->name('backend.slider.delete');
-
     // ── Categories ────────────────────────────────────────────────────────────────
     Route::prefix('backend/categories')
         ->name('backend.categories.')
@@ -119,17 +109,6 @@ Route::middleware('admin')->group(function () {
     Route::get('/backend/contact-form/list', [ContactFormController::class, 'ContactFormList'])->name('backend.contact_form.list');
     Route::get('/backend/contact-form/delete/{id}', [ContactFormController::class, 'ContactFormDelete'])->name('backend.contact_form.delete');
     Route::post('/backend/contact-form/bulk-delete', [ContactFormController::class, 'ContactFormBulkDelete'])->name('backend.contact_form.bulk_delete');
-
-    Route::prefix('backend/orders')
-        ->name('backend.orders.')
-        ->group(function () {
-            Route::get('/list', [OrderController::class, 'OrderList'])->name('list');
-            Route::get('/{id}/invoice', [OrderController::class, 'DownloadInvoice'])->name('invoice'); // ← NEW
-            Route::get('/{id}', [OrderController::class, 'OrderDetail'])->name('detail');
-            Route::post('/{id}/status', [OrderController::class, 'UpdateStatus'])->name('status.update');
-            Route::post('/{id}/payment-status', [OrderController::class, 'UpdatePaymentStatus'])->name('payment.status.update');
-            Route::get('/delete/{id}', [OrderController::class, 'OrderDelete'])->name('delete');
-        });
 
     Route::prefix('backend/newsletter')
         ->name('backend.newsletter.')

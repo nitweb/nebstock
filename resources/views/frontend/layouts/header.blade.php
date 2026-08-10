@@ -85,9 +85,9 @@
                     @php $__authUser = Auth::guard('user')->user(); @endphp
 
                     @if($__authUser && $__authUser->role === 'customer')
-                        <a href="{{ route('customer.dashboard') }}" class="btn btn-main pill">
-                            <span class="icon-left icon">
-                                <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
+                        <a href="{{ route('customer.dashboard') }}" class="btn btn-main pill" style="display: flex; align-items: center;">
+                            <span class="icon-left icon" style="width:24px;height:24px;border-radius:50%;overflow:hidden;display:inline-flex;">
+                                <img src="{{ asset('upload/customer_images/' . ($__authUser->photo ?? 'avatar.png')) }}" alt="" style="width:100%;height:100%;object-fit:cover;">
                             </span>Dashboard
                         </a>
                     @else
