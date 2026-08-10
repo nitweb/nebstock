@@ -254,7 +254,7 @@ class FrontendController extends Controller
         $mapped = $products->map(function ($product) {
             return [
                 'name' => $product->name,
-                'url' => route('product.details', $product->slug),
+                'url' => route('shop', ['q' => $product->name]),
                 'coverImage' => $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('upload/no_image.jpg'),
                 'authorNames' => $product->authors->pluck('name')->implode(', '),
                 'sellingPrice' => $product->selling_price,

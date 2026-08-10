@@ -83,9 +83,12 @@
             </div>
 
             <div class="top-bar__links">
-                <a href="javascript:void(0)" class="top-bar__link">Order Tracking</a>
-                <a href="javascript:void(0)" class="top-bar__link">My Account</a>
-                <a href="javascript:void(0)" class="top-bar__link">Checkout</a>
+                @auth('user')
+                    <a href="{{ route('customer.downloads') }}" class="top-bar__link">My Downloads</a>
+                    <a href="{{ route('customer.dashboard') }}" class="top-bar__link">My Account</a>
+                @else
+                    <a href="{{ route('customer.login') }}" class="top-bar__link">My Account</a>
+                @endauth
             </div>
 
         </div>
