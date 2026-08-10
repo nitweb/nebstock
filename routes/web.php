@@ -10,7 +10,6 @@ use App\Http\Controllers\Backend\MissionVisionController;
 use App\Http\Controllers\Backend\NewsletterController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SiteSettingsController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\BkashDemoController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\FrontendController;
@@ -194,8 +193,6 @@ Route::middleware('customer')->group(function () {
     // ── bKash Tokenized Checkout (real sandbox API) ──
     Route::post('/payment/bkash/initiate', [BkashDemoController::class, 'initiate'])->name('customer.payment.bkash.initiate');
     Route::post('/change/password', [CustomerAuthController::class, 'changePassword'])->name('customer.password.change');
-    Route::get('/my-orders', [CheckoutController::class, 'myOrders'])->name('customer.orders');
-    Route::get('/order/{id}/invoice', [CheckoutController::class, 'downloadInvoice'])->name('customer.order.invoice');
 
     Route::post('/download/{slug}', [DownloadController::class, 'download'])->name('product.download');
     Route::get('/download/remaining/check', [DownloadController::class, 'remaining'])->name('product.download.remaining');

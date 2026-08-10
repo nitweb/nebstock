@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -47,18 +46,6 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'category_product');
     }
 
-    public function authors(): BelongsToMany
-    {
-        return $this->belongsToMany(Author::class, 'author_product')
-            ->withPivot('sort_order')
-            ->orderByPivot('sort_order');
-    }
-
-    public function specification(): HasOne
-    {
-        return $this->hasOne(ProductSpecification::class);
-    }
-
     public function media(): HasMany
     {
         return $this->hasMany(ProductMedia::class)->orderBy('sort_order');
@@ -71,35 +58,6 @@ class Product extends Model
             ->orderBy('sort_order');
     }
 
-    public function relatedPlatforms(): HasMany
-    {
-        return $this->hasMany(RelatedProduct::class);
-    }
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(ProductReview::class)->latest();
-    }
-
-    public function acceptedReviews(): HasMany
-    {
-        return $this->hasMany(ProductReview::class)
-            ->where('status', 'accept')
-            ->latest();
-    }
-
-    public function variants(): HasMany
-    {
-        return $this->hasMany(ProductVariant::class)
-            ->where('is_active', true)
-            ->orderBy('sort_order');
-    }
-
-    public function allVariants(): HasMany
-    {
-        return $this->hasMany(ProductVariant::class)->orderBy('sort_order');
-    }
-
     // ── Accessors ─────────────────────────────────────────────────────────────
 
     public function getSellingPriceAttribute(): float
@@ -110,11 +68,6 @@ class Product extends Model
     public function getIsAffiliateAttribute(): bool
     {
         return ($this->product_mode ?? 'selling') === 'affiliate';
-    }
-
-    public function getPrimaryAuthorNameAttribute(): string
-    {
-        return $this->authors->first()?->name ?? '';
     }
 
     public function getHasVariantsAttribute(): bool
@@ -212,7 +165,7 @@ class Product extends Model
     public function scopeTopSelling($query, int $limit = 8)
     {
         return $query
-            ->with(['authors', 'categories', 'galleryImages'])
+            ->with(['categories', 'galleryImages'])
             ->active()
             ->inStock()
             ->limit($limit);

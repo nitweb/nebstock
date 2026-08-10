@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\AboutCompany;
 use App\Models\Category;
+use App\Models\Download;
 use App\Models\MissionVision;
 use App\Models\Newsletter;
-use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +30,7 @@ class FrontendController extends Controller
             ->with([
                 'recursiveChildren',
                 'products' => function ($q) {
-                    $q->with(['authors', 'galleryImages'])
+                    $q->with(['galleryImages'])
                         ->active()
                         // ->inStock()
                         ->latest()
@@ -40,17 +40,8 @@ class FrontendController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        // Featured products
-        $featured_products = Product::with(['authors', 'categories', 'galleryImages'])
-            ->active()
-            ->featured()
-            // ->inStock()
-            ->latest()
-            ->take(8)
-            ->get();
-
         // Latest products
-        $latest_products = Product::with(['authors', 'categories', 'galleryImages'])
+        $latest_products = Product::with(['categories', 'galleryImages'])
             ->active()
             ->latest()
             ->take(28)
@@ -59,7 +50,7 @@ class FrontendController extends Controller
         // Site-wide stats (home section 07)
         $total_products     = Product::active()->count();
         $total_subscribers  = Newsletter::count();
-        $total_downloads    = Order::count();
+        $total_downloads    = Download::count();
 
         // Wishlisted product ids for the logged-in customer (for heart icon state)
         $wishlistedIds = Auth::guard('user')->check()
@@ -67,7 +58,7 @@ class FrontendController extends Controller
             : [];
 
         return view('frontend.index', compact(
-            'categories', 'featured_products', 'latest_products',
+            'categories', 'latest_products',
             'total_products', 'total_subscribers', 'total_downloads', 'wishlistedIds'
         ));
     }
@@ -168,7 +159,7 @@ class FrontendController extends Controller
         // all children সহ category ids
         $catIds = $categoryInfo->allDescendantIds();
 
-        $query = Product::with(['authors', 'categories', 'galleryImages'])
+        $query = Product::with(['categories', 'galleryImages'])
             ->active()
             ->whereHas('categories', fn($q) => $q->whereIn('categories.id', $catIds));
 
@@ -196,9 +187,14 @@ class FrontendController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
+        // Wishlisted product ids for the logged-in customer (for heart icon state)
+        $wishlistedIds = Auth::guard('user')->check()
+            ? \App\Models\Wishlist::where('user_id', Auth::guard('user')->id())->pluck('product_id')->toArray()
+            : [];
+
         // AJAX: return only product grid + pagination HTML (same shape as Shop())
         if ($request->ajax()) {
-            $grid = view('frontend.pages.partials.shop_grid', compact('products'))->render();
+            $grid = view('frontend.pages.partials.shop_grid', compact('products', 'wishlistedIds'))->render();
             $pagination = view('frontend.pages.partials.shop_pagination', compact('products'))->render();
             return response()->json([
                 'grid' => $grid,
@@ -213,7 +209,7 @@ class FrontendController extends Controller
 
         $top_sell_product = Product::active()->inStock()->latest()->take(5)->get();
 
-        return view('frontend.pages.product_by_category', compact('categoryInfo', 'products', 'categories', 'top_sell_product'));
+        return view('frontend.pages.product_by_category', compact('categoryInfo', 'products', 'categories', 'top_sell_product', 'wishlistedIds'));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -241,13 +237,11 @@ class FrontendController extends Controller
     {
         $query = $request->get('query');
 
-        $products = Product::with(['authors'])
-            ->active()
-            ->where(function ($q) use ($query) {
+        $products = Product::where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                    ->orWhere('short_description', 'like', "%{$query}%")
-                    ->orWhereHas('authors', fn($a) => $a->where('name', 'like', "%{$query}%"));
+                    ->orWhere('short_description', 'like', "%{$query}%");
             })
+            ->active()
             ->limit(8)
             ->get();
 
@@ -256,7 +250,6 @@ class FrontendController extends Controller
                 'name' => $product->name,
                 'url' => route('shop', ['q' => $product->name]),
                 'coverImage' => $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('upload/no_image.jpg'),
-                'authorNames' => $product->authors->pluck('name')->implode(', '),
                 'sellingPrice' => $product->selling_price,
                 'original_price' => $product->discount_price ? $product->price : null,
             ];
