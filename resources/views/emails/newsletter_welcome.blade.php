@@ -18,7 +18,7 @@
                     <tr>
                         <td align="center" style="background:#111827;padding:35px;">
                             <h1 style="color:#fff;margin:0;font-size:30px;">
-                                Nicole Murray
+                                Nebstock
                             </h1>
                         </td>
                     </tr>

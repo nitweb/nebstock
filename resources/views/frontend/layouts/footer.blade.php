@@ -43,7 +43,7 @@
                     <h5 class="footer-widget__title text-white">Useful Link</h5>
                     <ul class="footer-lists">
                         <li class="footer-lists__item"><a href="{{ route('shop') }}" class="footer-lists__link">Product</a></li>
-                        <li class="footer-lists__item"><a href="{{ route('customer.dashboard') }}" class="footer-lists__link">Profile</a></li>
+                        <li class="footer-lists__item"><a href="{{ route('customer.profile') }}" class="footer-lists__link">Profile</a></li>
                         <li class="footer-lists__item"><a href="{{ route('customer.dashboard') }}" class="footer-lists__link">Dashboard</a></li>
                     </ul>
                 </div>
@@ -89,6 +89,7 @@
         <div class="bottom-footer__inner flx-between gap-3">
             <p class="bottom-footer__text font-14">{{ GlobalSiteSettings()->site_copyright }}, All rights reserved.</p>
             <div class="footer-links">
+                <a href="{{ route('about') }}" class="footer-link font-14">About Us</a>
                 <a href="{{ route('terms.conditions') }}" class="footer-link font-14">Terms of service</a>
                 <a href="{{ route('privacy.policy') }}" class="footer-link font-14">Privacy Policy</a>
             </div>

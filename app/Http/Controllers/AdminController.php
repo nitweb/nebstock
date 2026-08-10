@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Mail\WebsiteMail;
 use App\Models\ContactForm;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Intervention\Image\ImageManager;
@@ -25,8 +26,9 @@ class AdminController extends Controller
     {
         $productCount = Product::count();
         $contactCount = ContactForm::count();
+        $customerCount = User::whereIn('role', ['customer', 'guest'])->count();
 
-        return view('admin.index', compact('productCount', 'contactCount'));
+        return view('admin.index', compact('productCount', 'contactCount', 'customerCount'));
     }
 
     public function AdminLoginSubmit(Request $request)

@@ -2,9 +2,9 @@
 @section('admin')
     <style>
         :root {
-            --nm-gold: #B8860B;
-            --nm-gold-light: #D4A017;
-            --nm-gold-pale: #F5ECD0;
+            --nm-gold: #E4212C;
+            --nm-gold-light: #F0555D;
+            --nm-gold-pale: #FBE2E3;
             --nm-dark: #1A1A1A;
             --nm-dark-2: #2C2C2A;
             --nm-surface: #FAFAF8;
@@ -516,7 +516,7 @@
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript:void(0);">Nicole Murray</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Nebstock</a></li>
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ol>
                         </div>
@@ -530,7 +530,7 @@
                     <div class="nm-hero-accent"></div>
                     <div class="nm-hero-accent2"></div>
                     <div class="nm-hero-left">
-                        <p class="nm-hero-eyebrow">Nicole Murray Admin</p>
+                        <p class="nm-hero-eyebrow">Nebstock Admin</p>
                         <h1 class="nm-hero-title">Welcome back, {{ Auth::guard('admin')->user()->name ?? 'Admin' }}</h1>
                         <p class="nm-hero-sub">Here's what's happening with your store today.</p>
                     </div>
@@ -601,8 +601,8 @@
                                 <div class="nm-activity-item">
                                     <div class="nm-activity-dot" style="background:#EF9F27"></div>
                                     <div class="nm-activity-body">
-                                        <p class="nm-activity-text"><strong>{{ $blogCount ?? 0 }} blog posts</strong> published and live</p>
-                                        <span class="nm-activity-time">Content status</span>
+                                        <p class="nm-activity-text"><strong>{{ $customerCount ?? 0 }} customers</strong> registered on the store</p>
+                                        <span class="nm-activity-time">Customer status</span>
                                     </div>
                                 </div>
                                 <div class="nm-activity-item">
@@ -613,7 +613,7 @@
                                     </div>
                                 </div>
                                 <div class="nm-activity-item">
-                                    <div class="nm-activity-dot" style="background:#B8860B"></div>
+                                    <div class="nm-activity-dot" style="background:#E4212C"></div>
                                     <div class="nm-activity-body">
                                         <p class="nm-activity-text">Admin panel last accessed by <strong>{{ Auth::guard('admin')->user()->name ?? 'Admin' }}</strong></p>
                                         <span class="nm-activity-time">{{ now()->format('d M, H:i') }}</span>

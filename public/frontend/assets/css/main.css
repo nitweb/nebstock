@@ -102,9 +102,9 @@
     --main-gradient-rev: linear-gradient(312deg, hsl(var(--main-two)) 5.38%, hsl(var(--main)) 113.21%);
     --main-gradient-two: linear-gradient(305deg, hsl(var(--main)) 0%, hsl(var(--main-three)) 100%);
   /* ========================= Main Color ============================= */
-    --main-h: 253;
-    --main-s: 88%;
-    --main-l: 58%;
+    --main-h: 357;
+    --main-s: 78%;
+    --main-l: 51%;
     --main: var(--main-h) var(--main-s) var(--main-l);
   /* Main Lighten */
     --main-l-100: var(--main-h) calc(var(--main-s)) calc(var(--main-l) + (100% - var(--main-l)) * 0.1);
@@ -120,9 +120,9 @@
     --main-d-500: var(--main-h) var(--main-s) calc(var(--main-l) - var(--main-l) * 0.5);
   /* ========================= Main Color ============================= */
   /* ========================= Main two Color ============================= */
-    --main-two-h: 184;
-    --main-two-s: 96%;
-    --main-two-l: 48%;
+    --main-two-h: 0;
+    --main-two-s: 0%;
+    --main-two-l: 10%;
     --main-two: var(--main-two-h) var(--main-two-s) var(--main-two-l);
   /* Main-two Lighten */
     --main-two-l-100: var(--main-two-h) calc(var(--main-two-s)) calc(var(--main-two-l) + (100% - var(--main-two-l)) * 0.1);
@@ -138,9 +138,9 @@
     --main-two-d-500: var(--main-two-h) var(--main-two-s) calc(var(--main-two-l) - var(--main-two-l) * 0.5);
   /* ========================= Main Three Color ============================= */
   /* ========================= Main three Color ============================= */
-    --main-three-h: 306;
-    --main-three-s: 100%;
-    --main-three-l: 68%;
+    --main-three-h: 357;
+    --main-three-s: 70%;
+    --main-three-l: 38%;
     --main-three: var(--main-three-h) var(--main-three-s) var(--main-three-l);
   /* Main-three Lighten */
     --main-three-l-100: var(--main-three-h) calc(var(--main-three-s)) calc(var(--main-three-l) + (100% - var(--main-three-l)) * 0.1);
