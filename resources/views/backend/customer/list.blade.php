@@ -44,6 +44,8 @@
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>Status</th>
+                                            <th>Payment</th>
+                                            <th>Downloads</th>
                                             <th>Joined</th>
                                             <th style="width:130px;">Action</th>
                                         </tr>
@@ -70,6 +72,19 @@
                                                     <button class="btn btn-sm toggle-status-btn {{ $customer->status == '1' ? 'btn-success' : 'btn-secondary' }}" data-id="{{ $customer->id }}">
                                                         {{ $customer->status == '1' ? 'Active' : 'Inactive' }}
                                                     </button>
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        $paymentBadge = match($customer->payment_status) {
+                                                            'approved' => 'bg-success',
+                                                            'rejected' => 'bg-danger',
+                                                            default => 'bg-warning text-dark',
+                                                        };
+                                                    @endphp
+                                                    <span class="badge {{ $paymentBadge }}">{{ ucfirst($customer->payment_status ?? 'pending') }}</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-info">{{ $customer->downloads_count }}</span>
                                                 </td>
                                                 <td>{{ $customer->created_at->format('d M Y') }}</td>
                                                 <td>
@@ -123,7 +138,7 @@
                 columnDefs: [{
                     orderable: false,
                     searchable: false,
-                    targets: [0, 2, 6, 8]
+                    targets: [0, 2, 6, 10]
                 }],
             });
         });

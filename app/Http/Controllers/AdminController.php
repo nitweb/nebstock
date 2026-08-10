@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Mail\WebsiteMail;
 use App\Models\ContactForm;
-use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -26,9 +25,8 @@ class AdminController extends Controller
     {
         $productCount = Product::count();
         $contactCount = ContactForm::count();
-        $orderCount = Order::count();
 
-        return view('admin.index', compact('productCount', 'contactCount', 'orderCount'));
+        return view('admin.index', compact('productCount', 'contactCount'));
     }
 
     public function AdminLoginSubmit(Request $request)

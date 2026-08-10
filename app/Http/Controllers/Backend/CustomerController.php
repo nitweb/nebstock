@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +16,7 @@ class CustomerController extends Controller
     public function CustomerList()
     {
         $customers = User::whereIn('role', ['customer', 'guest'])
+            ->withCount('downloads')
             ->latest()
             ->paginate(20);
 
@@ -135,14 +135,17 @@ class CustomerController extends Controller
             ->whereIn('role', ['customer', 'guest'])
             ->firstOrFail();
 
-        $orders = Order::with('items')->where('user_id', $id)->latest()->paginate(10);
+        $downloads = \App\Models\Download::with('product')
+            ->where('user_id', $id)
+            ->latest()
+            ->paginate(10);
 
-        // Summary stats
-        $totalOrders = Order::where('user_id', $id)->count();
-        $totalSpent = Order::where('user_id', $id)->where('payment_status', 'paid')->sum('total');
-        $pendingOrders = Order::where('user_id', $id)->where('status', 'pending')->count();
+        $totalDownloads = \App\Models\Download::where('user_id', $id)->count();
+        $todayDownloads = \App\Models\Download::where('user_id', $id)
+            ->whereDate('download_date', now()->toDateString())
+            ->count();
 
-        return view('backend.customer.detail', compact('customer', 'orders', 'totalOrders', 'totalSpent', 'pendingOrders'));
+        return view('backend.customer.detail', compact('customer', 'downloads', 'totalDownloads', 'todayDownloads'));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
