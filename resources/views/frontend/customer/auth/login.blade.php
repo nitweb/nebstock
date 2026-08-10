@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>Customer Login | Nebedge</title>
+    <title>Customer Login | Nebstock</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">

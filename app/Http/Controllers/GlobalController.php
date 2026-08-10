@@ -28,8 +28,6 @@ class GlobalController extends Controller
             $allowedModels = [
                 \App\Models\Slider::class,
                 \App\Models\Product::class,
-                \App\Models\Blog::class,
-                \App\Models\Coupon::class, // এটা যোগ করুন
             ];
 
             if (!in_array($modelClass, $allowedModels)) {

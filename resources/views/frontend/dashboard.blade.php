@@ -8,22 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>@yield('frontend_title') | nebstock</title>
+    <title>@yield('frontend_title') | Nebstock</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">
 
     <!-- Open Graph / Social Share -->
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="nebstock">
-    <meta property="og:title" content="@yield('frontend_title') | nebstock">
+    <meta property="og:site_name" content="Nebstock">
+    <meta property="og:title" content="@yield('frontend_title') | Nebstock">
     <meta property="og:description" content="{{ GlobalSiteSettings()->site_description ?? '' }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('frontend/assets/images/logo/og.png') }}">
+    <meta property="og:image" content="{{ asset(GlobalSiteSettings()->site_header_logo) }}">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('frontend_title') | nebstock">
+    <meta name="twitter:title" content="@yield('frontend_title') | Nebstock">
     <meta name="twitter:description" content="{{ GlobalSiteSettings()->site_description ?? '' }}">
-    <meta name="twitter:image" content="{{ asset('frontend/assets/images/logo/og.png') }}">
+    <meta name="twitter:image" content="{{ asset(GlobalSiteSettings()->site_header_logo) }}">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
@@ -36,9 +36,9 @@
     <!-- line awesome -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/line-awesome.min.css') }}">
     <!-- Main css -->
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}?v={{ filemtime(public_path('frontend/assets/css/main.css')) }}">
-
-<link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}?v={{ filemtime(public_path('frontend/assets/css/custom.css')) }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">
 
 </head>
 
@@ -109,8 +109,11 @@
     <!-- marquee -->
     <script src="{{ asset('frontend/assets/js/marquee.min.js') }}"></script>
 
+    <!-- SweetAlert2 (site-wide toast notifications) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- main js -->
-    <script src="{{ asset('frontend/assets/js/main.js') }}?v={{ filemtime(public_path('frontend/assets/js/main.js')) }}"></script>
+    <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
 
     @stack('scripts')
 
