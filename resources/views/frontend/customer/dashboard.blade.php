@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Title -->
-    <title>@yield('customer_title') | Nebedge</title>
+    <title>@yield('customer_title') | Nebstock</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo/favicon.png') }}">
@@ -107,6 +107,9 @@
     <script src="{{ asset('frontend/assets/js/apexchart.js') }}"></script>
     <!-- marquee -->
     <script src="{{ asset('frontend/assets/js/marquee.min.js') }}"></script>
+
+    <!-- SweetAlert2 (site-wide toast notifications) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- main js -->
     <script src="{{ asset('frontend/assets/js/main.js') }}"></script>

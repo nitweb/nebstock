@@ -6,7 +6,7 @@
                     <a href="javascript:void(0)" class="link w-100">
                         <img src="{{ $product->cover_image ? asset('upload/product_covers/' . $product->cover_image) : asset('frontend/assets/images/thumbs/product-img1.png') }}" alt="{{ $product->name }}" class="cover-img">
                     </a>
-                    <button type="button" class="product-item__wishlist"><i class="fas fa-heart"></i></button>
+                    @include('frontend.partials.wishlist_button', ['product' => $product])
                 </div>
                 <div class="product-item__content">
                     <h6 class="product-item__title">

@@ -214,11 +214,56 @@
     ]
   });
   // ========================= popular Category Js End ===================
-  
+
   // ========================= Wishlist Js Start ===================
-  $('.product-item__wishlist').on('click', function() {
-    $(this).toggleClass('active')
-  }); 
+  $(document).on('click', '[data-wishlist-toggle]', function() {
+    const btn = $(this);
+    const isLoggedIn = btn.data('logged-in') == '1' || btn.data('logged-in') === 1;
+
+    if (!isLoggedIn) {
+      window.location.href = btn.data('login-url');
+      return;
+    }
+
+    if (btn.hasClass('processing')) return;
+    btn.addClass('processing');
+
+    const Toast = typeof Swal !== 'undefined' ? Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+    }) : null;
+
+    $.ajax({
+      url: btn.data('toggle-url'),
+      type: 'POST',
+      data: {
+        _token: btn.data('csrf'),
+        product_id: btn.data('product-id'),
+      },
+      success: function(res) {
+        if (res.success) {
+          btn.toggleClass('active', res.added);
+          if (Toast) {
+            Toast.fire({
+              icon: 'success',
+              title: res.added ? 'Added to wishlist!' : 'Removed from wishlist.',
+            });
+          }
+        }
+      },
+      error: function() {
+        if (Toast) {
+          Toast.fire({ icon: 'error', title: 'Something went wrong. Please try again.' });
+        }
+      },
+      complete: function() {
+        btn.removeClass('processing');
+      }
+    });
+  });
   // ========================= Wishlist Js End ===================
   
   // ========================= Selling Product Js Start ==============
