@@ -70,7 +70,7 @@
                                     </div>
                                 @endif
                                 <input type="file" name="file" id="product_file_input" class="form-control">
-                                <small class="text-muted d-block mt-2">Any format. Leave empty to keep the current file.</small>
+                                <small class="text-muted d-block mt-2">Any format. Leave empty to keep the current file. Choosing a new file auto-fills Product Name above.</small>
                                 <div id="fileNamePreview" class="mt-2 small fw-semibold text-success"></div>
                             </div>
                         </div>
@@ -130,10 +130,22 @@
                 reader.readAsDataURL(this.files[0]);
             });
 
-            // ── File Name Preview ─────────────────────────────────────────────────
+            // ── File Name Preview + Auto-fill Product Name from file name ─────────
             $('#product_file_input').on('change', function() {
                 const f = this.files[0];
                 $('#fileNamePreview').text(f ? ('Selected: ' + f.name) : '');
+
+                if (!f) return;
+
+                const baseName = f.name.replace(/\.[^/.]+$/, '');
+                const niceName = baseName
+                    .replace(/[-_]+/g, ' ')
+                    .replace(/([a-z])([A-Z])/g, '$1 $2')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase());
+
+                $('#product_name').val(niceName);
             });
 
             // ── Category Quick Add Modal ──────────────────────────────────────────
