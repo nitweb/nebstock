@@ -17,6 +17,18 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/clear-cache', function () {
+
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+
+    return redirect()->route('index');
+});
+
 // #################### Frontend Controller ####################
 Route::middleware('web')->group(function () {
     // Home
