@@ -25,6 +25,18 @@
                     </ul>
                 </li>
 
+                {{-- Fonts --}}
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="type"></i>
+                        <span>Fonts</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('backend.fonts.list') }}">Font List</a></li>
+                        <li><a href="{{ route('backend.fonts.add') }}">Add Font</a></li>
+                    </ul>
+                </li>
+
                 {{-- Newsletter --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
