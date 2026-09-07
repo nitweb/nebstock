@@ -26,12 +26,12 @@
                         <div class="profile-info__inner mb-40 text-center">
 
                             <div class="avatar-upload mb-24">
-                                <div class="avatar-edit">
+                                {{-- <div class="avatar-edit">
                                     <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg">
                                     <label for="imageUpload">
                                         <img src="{{ asset('frontend/assets/images/icons/camera.svg') }}" alt="">
                                     </label>
-                                </div>
+                                </div> --}}
                                 <div class="avatar-preview">
                                     <div id="imagePreview" style="background-image: url('{{ $customer->photo ? asset('upload/customer_images/' . $customer->photo) : asset('frontend/assets/images/thumbs/user-profile.png') }}');">
                                     </div>

@@ -11,6 +11,14 @@
 
         <div class="mobile-menu__menu">
 
+            @php
+                $__mobileCategories = \App\Models\Category::active()->root()
+                    ->with('recursiveChildren')
+                    ->orderBy('sort_order')
+                    ->take(6)
+                    ->get();
+            @endphp
+
             <ul class="nav-menu flx-align nav-menu--mobile">
 
                 <li class="nav-menu__item">
@@ -18,54 +26,27 @@
                 </li>
 
                 <li class="nav-menu__item">
-                    <a href="javascript:void(0)" class="nav-menu__link">Font</a>
+                    <a href="{{ route('fonts.index') }}" class="nav-menu__link">Font</a>
                 </li>
 
-                <li class="nav-menu__item has-submenu">
-                    <a href="javascript:void(0)" class="nav-menu__link">Mockups</a>
-                    <ul class="nav-submenu">
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Mockup One</a>
+                @foreach($__mobileCategories as $__cat)
+                    @if($__cat->recursiveChildren->count())
+                        <li class="nav-menu__item has-submenu">
+                            <a href="{{ route('product.by.category', $__cat->slug) }}" class="nav-menu__link">{{ $__cat->name }}</a>
+                            <ul class="nav-submenu">
+                                @foreach($__cat->recursiveChildren as $__child)
+                                    <li class="nav-submenu__item">
+                                        <a href="{{ route('product.by.category', $__child->slug) }}" class="nav-submenu__link"> {{ $__child->name }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </li>
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Mockup Two</a>
+                    @else
+                        <li class="nav-menu__item">
+                            <a href="{{ route('product.by.category', $__cat->slug) }}" class="nav-menu__link">{{ $__cat->name }}</a>
                         </li>
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Mockup Three</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-menu__item has-submenu">
-                    <a href="javascript:void(0)" class="nav-menu__link">Vectors</a>
-                    <ul class="nav-submenu">
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Vector One</a>
-                        </li>
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Vector Two</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-menu__item has-submenu">
-                    <a href="javascript:void(0)" class="nav-menu__link">Animation</a>
-                    <ul class="nav-submenu">
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Animation One</a>
-                        </li>
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Animation Two</a>
-                        </li>
-                        <li class="nav-submenu__item">
-                            <a href="javascript:void(0)" class="nav-submenu__link"> Animation Three</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-menu__item">
-                    <a href="javascript:void(0)" class="nav-menu__link">Web Theme</a>
-                </li>
+                    @endif
+                @endforeach
 
                 <li class="nav-menu__item">
                     <a href="{{ route('contact') }}" class="nav-menu__link">Contact</a>
@@ -75,16 +56,26 @@
 
             <div class="header-right__inner d-lg-none my-3 gap-1 d-flex flx-align">
 
-                <a href="javascript:void(0)" class="btn btn-main pill">
-                    <span class="icon-left icon">
-                        <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
-                    </span>Create Account
-                </a>
+                @php $__authUserMobile = Auth::guard('user')->user(); @endphp
+
+                @if($__authUserMobile && $__authUserMobile->role === 'customer')
+                    <a href="{{ route('customer.dashboard') }}" class="btn btn-main pill" style="display: flex; align-items: center;">
+                        <span class="icon-left icon" style="width:24px;height:24px;border-radius:50%;overflow:hidden;display:inline-flex;">
+                            <img src="{{ asset('upload/customer_images/' . ($__authUserMobile->photo ?? 'avatar.png')) }}" alt="" style="width:100%;height:100%;object-fit:cover;">
+                        </span>Dashboard
+                    </a>
+                @else
+                    <a href="{{ route('customer.register') }}" class="btn btn-main pill">
+                        <span class="icon-left icon">
+                            <img src="{{ asset('frontend/assets/images/icons/user.svg') }}" alt="">
+                        </span>Create Account
+                    </a>
+                @endif
 
             </div>
 
         </div>
 
     </div>
-    
+
 </div>

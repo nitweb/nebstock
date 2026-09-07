@@ -33,7 +33,7 @@
                     </li>
 
                     <li class="nav-menu__item">
-                        <a href="javascript:void(0)" class="nav-menu__link">Font</a>
+                        <a href="{{ route('fonts.index') }}" class="nav-menu__link">Font</a>
                     </li>
 
                     @foreach($__headerCategories as $__cat)

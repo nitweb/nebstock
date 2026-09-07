@@ -150,7 +150,13 @@ class CustomerAuthController extends Controller
             $file_name = uniqid('customer_', true) . '.' . $file->getClientOriginalExtension();
             $img = $manager->read($file->getRealPath());
             $img->resize(300, 300);
-            $img->save(public_path('upload/customer_images/') . $file_name);
+
+            $destination = public_path('upload/customer_images');
+            if (!is_dir($destination)) {
+                mkdir($destination, 0755, true);
+            }
+
+            $img->save($destination . '/' . $file_name);
             $data->photo = $file_name;
 
             if ($old_photo_path && $old_photo_path !== $file_name) {
