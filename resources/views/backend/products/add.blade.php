@@ -60,7 +60,7 @@
                             <div class="card-header fw-semibold">Product File <span class="text-danger">*</span></div>
                             <div class="card-body">
                                 <input type="file" name="file" id="product_file_input" class="form-control" required>
-                                <small class="text-muted d-block mt-2">Any format. This is the file the customer downloads after payment.</small>
+                                <small class="text-muted d-block mt-2">Any format. This is the file the customer downloads after payment. Product Name above is auto-filled from this file's name.</small>
                                 <div id="fileNamePreview" class="mt-2 small fw-semibold text-success"></div>
                             </div>
                         </div>
@@ -120,10 +120,22 @@
                 reader.readAsDataURL(this.files[0]);
             });
 
-            // ── File Name Preview ─────────────────────────────────────────────────
+            // ── File Name Preview + Auto-fill Product Name from file name ─────────
             $('#product_file_input').on('change', function() {
                 const f = this.files[0];
                 $('#fileNamePreview').text(f ? ('Selected: ' + f.name) : '');
+
+                if (!f) return;
+
+                const baseName = f.name.replace(/\.[^/.]+$/, ''); // strip extension
+                const niceName = baseName
+                    .replace(/[-_]+/g, ' ')
+                    .replace(/([a-z])([A-Z])/g, '$1 $2') // MyProductName -> My Product Name
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.substr(1).toLowerCase());
+
+                $('#book_name').val(niceName);
             });
 
             // ── Category Quick Add Modal ──────────────────────────────────────────
