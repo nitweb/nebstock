@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\AboutCompanyController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ContactFormController;
 use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\FontController;
 use App\Http\Controllers\Backend\MissionVisionController;
 use App\Http\Controllers\Backend\NewsletterController;
 use App\Http\Controllers\Backend\ProductController;
@@ -16,6 +17,18 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
+
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/clear-cache', function () {
+
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+
+    return redirect()->route('index');
+});
 
 // #################### Frontend Controller ####################
 Route::middleware('web')->group(function () {
@@ -39,6 +52,11 @@ Route::middleware('web')->group(function () {
 
     // Search
     Route::get('/ajax-search', [FrontendController::class, 'ajaxSearch'])->name('ajax.search');
+
+    // Fonts (1001fonts-style library)
+    Route::get('/fonts', [FrontendController::class, 'Fonts'])->name('fonts.index');
+    Route::get('/fonts/{slug}', [FrontendController::class, 'FontDetail'])->name('fonts.show');
+    Route::get('/fonts/{slug}/download', [FrontendController::class, 'FontDownload'])->name('fonts.download');
 
     // ── Cart — REMOVED (no cart/checkout flow, direct one-click download instead) ──
 
@@ -92,6 +110,18 @@ Route::middleware('admin')->group(function () {
             Route::get('/edit/{id}', [ProductController::class, 'ProductEdit'])->name('edit');
             Route::post('/update', [ProductController::class, 'ProductUpdate'])->name('update');
             Route::get('/delete/{id}', [ProductController::class, 'ProductDelete'])->name('delete');
+        });
+
+    // ── Fonts ─────────────────────────────────────────────────────────────────────
+    Route::prefix('backend/fonts')
+        ->name('backend.fonts.')
+        ->group(function () {
+            Route::get('/list', [FontController::class, 'FontList'])->name('list');
+            Route::get('/add', [FontController::class, 'FontAdd'])->name('add');
+            Route::post('/store', [FontController::class, 'FontStore'])->name('store');
+            Route::get('/edit/{id}', [FontController::class, 'FontEdit'])->name('edit');
+            Route::post('/update', [FontController::class, 'FontUpdate'])->name('update');
+            Route::get('/delete/{id}', [FontController::class, 'FontDelete'])->name('delete');
         });
 
     // About Our Company

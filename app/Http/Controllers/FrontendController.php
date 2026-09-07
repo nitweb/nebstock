@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AboutCompany;
 use App\Models\Category;
 use App\Models\Download;
+use App\Models\Font;
 use App\Models\MissionVision;
 use App\Models\Newsletter;
 use App\Models\Product;
@@ -228,6 +229,64 @@ class FrontendController extends Controller
         $about_company = AboutCompany::latest()->first();
         $mission_vision = MissionVision::latest()->get();
         return view('frontend.pages.about_us', compact('about_company', 'mission_vision'));
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  FONTS  (1001fonts-style library)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /** Fonts grid — browse / search / filter by category, style, license */
+    public function Fonts(Request $request)
+    {
+        $query = Font::active();
+
+        if ($request->filled('q')) {
+            $query->where('name', 'like', '%' . $request->q . '%');
+        }
+
+        $fonts = $query->latest()->paginate(24)->withQueryString();
+
+        return view('frontend.fonts.index', compact('fonts'));
+    }
+
+    /** Single font detail page */
+    public function FontDetail(string $slug)
+    {
+        $font = Font::active()->where('slug', $slug)->firstOrFail();
+
+        $relatedFonts = Font::active()
+            ->where('id', '!=', $font->id)
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('frontend.fonts.show', compact('font', 'relatedFonts'));
+    }
+
+    /** Direct font file download + counter — requires login + completed payment, same gate as products */
+    public function FontDownload(string $slug)
+    {
+        $user = Auth::guard('user')->user();
+
+        if (!$user) {
+            return redirect()->route('customer.login')->with('error', 'Please login to download.');
+        }
+
+        if ($user->payment_status !== 'approved') {
+            return redirect()->route('customer.payment')->with('payment_required', true)
+                ->with('error', 'Please complete your one-time payment to unlock downloads.');
+        }
+
+        $font = Font::active()->where('slug', $slug)->firstOrFail();
+
+        $path = public_path('upload/fonts/' . $font->font_file);
+        if (!file_exists($path)) {
+            abort(404, 'Font file not found.');
+        }
+
+        $font->increment('downloads_count');
+
+        return response()->download($path, $font->font_file);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
